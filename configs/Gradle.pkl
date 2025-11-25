@@ -11,6 +11,9 @@ local linters = new Mapping<String, Step> {
 
   // Spotless code formatter
   ["spotlessGradle"] = Shared.spotlessGradle
+
+  // actionlint for GitHub Actions workflow files
+  ["actionlint"] = Shared.actionlint
 }
 
 hooks {
