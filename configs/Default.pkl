@@ -1,3 +1,7 @@
+/*
+  Default configuration with tools that work for most repos.
+*/
+
 amends "../Config.pkl"
 import "../Builtins.pkl"
 import "../Shared.pkl"
@@ -8,6 +12,9 @@ local linters = new Mapping<String, Step> {
 
   // pkl file linter
   ["pkl"] = Shared.pkl
+
+  // actionlint for GitHub Actions workflow files
+  ["actionlint"] = Shared.actionlint
 }
 
 hooks {
