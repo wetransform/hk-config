@@ -4,6 +4,9 @@ import "./Builtins.pkl"
 actionlint = (Builtins.actionlint) {
   // extend to include actiion.yml/yaml files
   glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml", "action.yml", "action.yaml")
+
+  // exclude managed tf- files which are generated
+  exclude = List(".github/workflows/tf-*")
 }
 
 pkl = new Config.Step {
