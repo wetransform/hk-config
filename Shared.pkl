@@ -19,6 +19,9 @@ pkl = new Config.Step {
 }
 
 spotlessGradle = new Config.Step {
+  // define relevant file types for default Spotless configuration to avoid unnecessary runs
+  glob = List("*.gradle", "*.java", "*.scala", "*.sc", "*.groovy", "*.kt", "*.kts", "*.md")
+
   check = new Config.Script {
     linux = "./gradlew spotlessCheck"
     macos = "./gradlew spotlessCheck"
