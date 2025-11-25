@@ -9,6 +9,11 @@ actionlint = (Builtins.actionlint) {
   exclude = List(".github/workflows/tf-*")
 }
 
+prettier = (Builtins.prettier) {
+  // exclude files which are generated/managed
+  exclude = List(".github/workflows/tf-*", "CHANGELOG.md")
+}
+
 pkl = new Config.Step {
   glob = "*.pkl"
   check = new Config.Script {

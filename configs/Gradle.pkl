@@ -4,7 +4,7 @@ import "../Shared.pkl"
 
 local linters = new Mapping<String, Step> {
   // use prettier, in this case mainly intended for config files like JSON, YAML, etc.
-  ["prettier"] = Builtins.prettier
+  ["prettier"] = Shared.prettier
 
   // pkl file linter
   ["pkl"] = Shared.pkl
