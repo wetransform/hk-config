@@ -1,0 +1,33 @@
+import "./Config.pkl"
+import "./Builtins.pkl"
+
+actionlint = (Builtins.actionlint) {
+  // extend to include actiion.yml/yaml files
+  glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml", "action.yml", "action.yaml")
+}
+
+pkl = new Config.Step {
+  glob = "*.pkl"
+  check = new Config.Script {
+    linux = "pkl eval {{files}} >/dev/null"
+    macos = "pkl eval {{files}} >/dev/null"
+    windows = "pkl eval {{files}} >nul"
+  }
+}
+
+spotlessGradle = new Config.Step {
+  check = new Config.Script {
+    linux = "./gradlew spotlessCheck"
+    macos = "./gradlew spotlessCheck"
+    windows = "gradlew.bat spotlessCheck"
+  }
+
+  fix = new Config.Script {
+    linux = "./gradlew spotlessApply"
+    macos = "./gradlew spotlessApply"
+    windows = "gradlew.bat spotlessApply"
+  }
+
+  // Only run if Gradle wrapper exists - FIXME does this work with Windows?
+  condition = "test -d gradle/wrapper"
+}
