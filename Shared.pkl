@@ -2,8 +2,8 @@ import "./Config.pkl"
 import "./Builtins.pkl"
 
 actionlint = (Builtins.actionlint) {
-  // extend to include actiion.yml/yaml files
-  glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml", "action.yml", "action.yaml")
+  // extend to include actiion.yml/yaml files XXX turned out this is not supported by actionlint at the moment
+  // glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml", "action.yml", "action.yaml")
 
   // exclude managed tf- files which are generated
   exclude = List(".github/workflows/tf-*")
