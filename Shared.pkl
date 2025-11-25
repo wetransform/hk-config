@@ -32,5 +32,6 @@ spotlessGradle = new Config.Step {
   }
 
   // Only run if Gradle wrapper exists - FIXME does this work with Windows?
-  condition = "test -d gradle/wrapper"
+  // condition = "test -d gradle/wrapper" FIXME does not actually work like this - based on outdated example
+  //TODO reevaluate at a later time if we can add such a condition, for now we assume if this is imported, the project uses Gradle
 }
