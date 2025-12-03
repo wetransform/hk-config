@@ -1,0 +1,18 @@
+/*
+  Default configuration with tools that work for most repos.
+*/
+
+import "../Config.pkl"
+import "../Builtins.pkl"
+import "../Shared.pkl"
+
+steps = new Mapping<String, Config.Step> {
+  // use prettier, in this case mainly intended for config files like JSON, YAML, etc.
+  ["prettier"] = Shared.prettier
+
+  // pkl file linter
+  ["pkl"] = Shared.pkl
+
+  // actionlint for GitHub Actions workflow files
+  ["actionlint"] = Shared.actionlint
+}

@@ -1,0 +1,5 @@
+amends "../../Config.pkl"
+import "../../Functions.pkl"
+import "../../steps/Gradle.pkl" as Steps
+
+hooks = Functions.defaultHooks(true, Steps.steps)

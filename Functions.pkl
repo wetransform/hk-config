@@ -1,0 +1,19 @@
+import "./Config.pkl"
+
+function defaultHooks(autofix: Boolean, useSteps: Mapping<String, Config.Step>): Mapping<String, Config.Hook> = new Mapping<String, Config.Hook> {
+  ["pre-commit"] {
+    fix = autofix
+    stash = "git"
+    steps = useSteps
+  }
+  ["pre-push"] {
+    steps = useSteps
+  }
+  ["fix"] {
+    fix = true
+    steps = useSteps
+  }
+  ["check"] {
+    steps = useSteps
+  }
+}
