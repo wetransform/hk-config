@@ -7,7 +7,7 @@ Shared configurations for managing pre-commit and pre-push git hooks using [hk](
 If you have a repository where a configuration was already set up using hk, you can simply run:
 
 ```sh
-hk install
+hk install --mise
 ```
 
 If hk is not installed yet, you should be able to install it, including required tools, using mise (`mise install`).
@@ -51,6 +51,13 @@ The respective section in the `mise.toml` file should look like this:
 [tools]
 hk = "latest"
 pkl = "latest"
+```
+
+If experimental features are enabled in your mise setup, you can add a `postinstall` hook to automatically install the git hooks after running `mise install`:
+
+```toml
+[hooks]
+postinstall = "hk install --mise"
 ```
 
 ### Setting up the hk configuration
@@ -112,4 +119,21 @@ hooks {
     steps = linters
   }
 }
+```
+
+You can also reuse the function that creates the hooks mapping to avoid boilerplate code:
+
+```pkl
+amends "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Config.pkl"
+import "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Shared.pkl"
+import "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Functions.pkl"
+
+local linters = new Mapping<String, Step> {
+  // use shared linters from Shared.pkl
+  ["prettier"] = Shared.prettier
+  ["pkl"] = Shared.pkl
+  ["actionlint"] = Shared.actionlint
+}
+
+hooks = Functions.defaultHooks(true, linters)
 ```
