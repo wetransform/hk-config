@@ -1,7 +1,6 @@
 /*
   Default configuration with tools that work for most repos. Autofix on pre-commit.
 */
-
 amends "../../Config.pkl"
 import "../../Functions.pkl"
 import "../../steps/Default.pkl" as Steps
