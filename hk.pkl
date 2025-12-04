@@ -1,1 +1,13 @@
-amends "./configs/autofix/Default.pkl"
+amends "./Config.pkl"
+import "./Functions.pkl"
+import "./steps/Default.pkl" as Steps
+
+local steps = (Steps.steps) {
+  // in addition to the default steps, run hk test
+  ["hktest"] = new Step {
+    check = "hk test"
+    exclusive = true // avoid problems conflicting with other steps (e.g. installation of prettier via mise)
+  }
+}
+
+hooks = Functions.defaultHooks(true, steps)
