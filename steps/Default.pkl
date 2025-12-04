@@ -1,9 +1,8 @@
 /*
   Default configuration with tools that work for most repos.
 */
-
-import "../Config.pkl"
 import "../Builtins.pkl"
+import "../Config.pkl"
 import "../Shared.pkl"
 
 steps = new Mapping<String, Config.Step> {
