@@ -14,17 +14,12 @@ prettier = (Builtins.prettier) {
   exclude = List(".github/workflows/tf-*", "CHANGELOG.md")
 }
 
-pkl = new Config.Step {
-  glob = "*.pkl"
-  check = new Config.Script {
-    linux = "pkl eval {{files}} >/dev/null"
-    macos = "pkl eval {{files}} >/dev/null"
-    windows = "pkl eval {{files}} >nul"
-  }
-}
+pkl = Builtins.pkl
 
 // Note: supported since pkl 0.30 - https://pkl-lang.org/main/current/release-notes/0.30.html
+// TODO use Builtins.pkl_format as soon as hk is released (>1.25.0)
 pklformat = new Config.Step {
+  stage = "<JOB_FILES>"
   glob = "*.pkl"
   check = "pkl format --silent {{files}}"
   // exit code of pkl format is 1 if changes were made, so we first attempt to write changes with -w, and if that fails, we run again with --silent to ensure a zero exit code on success
