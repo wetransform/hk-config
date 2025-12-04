@@ -19,4 +19,7 @@ steps = new Mapping<String, Config.Step> {
 
   // terraform formatting - assumes correct terraform is available, e.g. via mise or similar
   ["terraform"] = Builtins.terraform
+
+  // include secret scanning by default
+  ["gitleaks"] = Shared.gitleaks
 }
