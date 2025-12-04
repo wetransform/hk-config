@@ -14,6 +14,9 @@ actionlint = (Builtins.actionlint) {
 prettier = (Builtins.prettier) {
   prefix = "mise x prettier --"
 
+  // batching seems to cause problems in combination with using `mise x`
+  batch = false
+
   // exclude files which are generated/managed
   exclude = List(".github/workflows/tf-*", "CHANGELOG.md")
 }
