@@ -1,5 +1,5 @@
-import "./Config.pkl"
 import "./Builtins.pkl"
+import "./Config.pkl"
 
 actionlint = (Builtins.actionlint) {
   // extend to include actiion.yml/yaml files XXX turned out this is not supported by actionlint at the moment
@@ -21,6 +21,14 @@ pkl = new Config.Step {
     macos = "pkl eval {{files}} >/dev/null"
     windows = "pkl eval {{files}} >nul"
   }
+}
+
+// Note: supported since pkl 0.30 - https://pkl-lang.org/main/current/release-notes/0.30.html
+pklformat = new Config.Step {
+  glob = "*.pkl"
+  check = "pkl format --silent {{files}}"
+  // exit code of pkl format is 1 if changes were made, so we first attempt to write changes with -w, and if that fails, we run again with --silent to ensure a zero exit code on success
+  fix = "pkl format -w {{files}} || pkl format --silent {{files}}"
 }
 
 spotlessGradle = new Config.Step {
