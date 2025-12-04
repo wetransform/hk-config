@@ -32,6 +32,25 @@ You can run fixes manually using:
 hk fix --all
 ```
 
+### Troubleshooting
+
+It can be that `hk` uses an outdated configuration because of its internal caching mechanism.
+In this case you can clear the cache using:
+
+```sh
+hk cache clear
+```
+
+This may not help in all cases, especially when using remote configurations.
+You can try to run `pkl` directly to see if the configuration is as expected:
+
+```sh
+pkl eval hk.pkl
+```
+
+If the configuration is not as expected it may be that the remote file is cached by `pkl`.
+It is unclear though how to clear the `pkl` cache in this case, solution is usually to change the URL (e.g. by using a different tag or commit hash).
+
 ## Setting up hk in a new repository
 
 As a prerequisite for all setups with hk we set up a mise configuration.
