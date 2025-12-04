@@ -1,0 +1,12 @@
+amends "./mise/Config.pkl"
+import
+  "package://pkg.pkl-lang.org/pkl-pantry/pkl.toml@1.0.2::sha256:45fea4cf14e7d776e131b338efe2a7016f86c87b0c0f532409f728033bd82f71#/toml.pkl"
+
+import "./Functions.pkl"
+import "./steps/Default.pkl" as Steps
+
+tools = Functions.miseTools(Steps.steps)
+
+output {
+  renderer = new toml.Renderer {}
+}

@@ -1,4 +1,15 @@
-[tools]
-hk = "latest"
-pkl = "latest"
-prettier = "3"
+[tasks.pklconfig]
+run = "mise exec pkl -- pkl eval mise.pkl -o .config/mise/conf.d/pkl.toml"
+
+[tasks.setup]
+depends = ["pklconfig"]
+run = "mise install -y && hk install --mise"
+
+[hooks]
+# Update the hooks setup when entering the environment (requires mise to be activated)
+enter = "mise run setup"
+
+# It would be great if we could set up everything with just a `mise install` call, but we need to generate the pkl config first.
+# Thus related to `mise install it needs to be called twice, once to generate the config and once to install the tools from the generated config.
+# Note: preinstall is not executed when there is nothing to install (would probably still happen too late for the generated config to be used)
+postinstall = "mise run pklconfig" # can't trigger a mise install here because it would loop -> potentially use a modification check for the target file?

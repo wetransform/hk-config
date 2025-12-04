@@ -1,0 +1,11 @@
+// partial schema for mise config as needed for configuring tools
+
+class ToolConfig {
+  version: String?
+  os: List<String>?
+  postInstall: String?
+}
+
+typealias Tool = (String | ToolConfig)
+
+tools: Mapping<String, Tool> = new Mapping<String, Tool> {}

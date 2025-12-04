@@ -1,81 +1,149 @@
 import "./Builtins.pkl"
 import "./Config.pkl"
+import "./mise/Config.pkl" as Mise
 
-actionlint = (Builtins.actionlint) {
-  // extend to include actiion.yml/yaml files XXX turned out this is not supported by actionlint at the moment
-  // glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml", "action.yml", "action.yaml")
-
-  // exclude managed tf- files which are generated
-  exclude = List(".github/workflows/tf-*")
+class Tool {
+  tool: String
+  config: Mise.Tool
 }
 
-prettier = (Builtins.prettier) {
-  // exclude files which are generated/managed
-  exclude = List(".github/workflows/tf-*", "CHANGELOG.md")
+class MiseStep {
+  step: Config.Step
+  tool: Tool?
 }
 
-pkl = Builtins.pkl
+typealias Step = (Config.Step | MiseStep)
+
+actionlint = new MiseStep {
+  tool = new Tool {
+    tool = "actionlint"
+    config = "latest"
+  }
+  step = (Builtins.actionlint) {
+    // extend to include actiion.yml/yaml files XXX turned out this is not supported by actionlint at the moment
+    // glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml", "action.yml", "action.yaml")
+
+    // exclude managed tf- files which are generated
+    exclude = List(".github/workflows/tf-*")
+  }
+}
+
+prettier = new MiseStep {
+  tool = new Tool {
+    tool = "prettier"
+    config = "latest"
+  }
+  step = (Builtins.prettier) {
+    // exclude files which are generated/managed
+    exclude = List(".github/workflows/tf-*", "CHANGELOG.md")
+  }
+}
+
+local pklTool = new Tool {
+  tool = "pkl"
+  config = "0.30"
+}
+
+pkl = new MiseStep {
+  tool = pklTool
+  step = Builtins.pkl
+}
 
 // Note: supported since pkl 0.30 - https://pkl-lang.org/main/current/release-notes/0.30.html
 // TODO use Builtins.pkl_format as soon as hk is released (>1.25.0)
-pklformat = new Config.Step {
-  stage = "<JOB_FILES>"
-  glob = "*.pkl"
-  check = "pkl format --silent {{files}}"
-  // exit code of pkl format is 1 if changes were made, so we first attempt to write changes with -w, and if that fails, we run again with --silent to ensure a zero exit code on success
-  fix = "pkl format -w {{files}} || pkl format --silent {{files}}"
+pklformat = new MiseStep {
+  tool = pklTool
+  step = new Config.Step {
+    stage = "<JOB_FILES>"
+    glob = "*.pkl"
+    check = "pkl format --silent {{files}}"
+    // exit code of pkl format is 1 if changes were made, so we first attempt to write changes with -w, and if that fails, we run again with --silent to ensure a zero exit code on success
+    fix = "pkl format -w {{files}} || pkl format --silent {{files}}"
+  }
 }
 
-spotlessGradle = new Config.Step {
-  // define relevant file types for default Spotless configuration to avoid unnecessary runs
-  glob = List("*.gradle", "*.java", "*.scala", "*.sc", "*.groovy", "*.kt", "*.kts", "*.md")
+spotlessGradle = new MiseStep {
+  step = new Config.Step {
+    // define relevant file types for default Spotless configuration to avoid unnecessary runs
+    glob = List("*.gradle", "*.java", "*.scala", "*.sc", "*.groovy", "*.kt", "*.kts", "*.md")
 
-  check = new Config.Script {
-    linux = "./gradlew spotlessCheck"
-    macos = "./gradlew spotlessCheck"
-    windows = "gradlew.bat spotlessCheck"
+    check = new Config.Script {
+      linux = "./gradlew spotlessCheck"
+      macos = "./gradlew spotlessCheck"
+      windows = "gradlew.bat spotlessCheck"
+    }
+
+    fix = new Config.Script {
+      linux = "./gradlew spotlessApply"
+      macos = "./gradlew spotlessApply"
+      windows = "gradlew.bat spotlessApply"
+    }
+
+    // Only run if Gradle wrapper exists - FIXME does this work with Windows?
+    // condition = "test -d gradle/wrapper" FIXME does not actually work like this - based on outdated example
+    //TODO reevaluate at a later time if we can add such a condition, for now we assume if this is imported, the project uses Gradle
   }
-
-  fix = new Config.Script {
-    linux = "./gradlew spotlessApply"
-    macos = "./gradlew spotlessApply"
-    windows = "gradlew.bat spotlessApply"
-  }
-
-  // Only run if Gradle wrapper exists - FIXME does this work with Windows?
-  // condition = "test -d gradle/wrapper" FIXME does not actually work like this - based on outdated example
-  //TODO reevaluate at a later time if we can add such a condition, for now we assume if this is imported, the project uses Gradle
 }
 
 // Secret detection tools
 
 // https://github.com/Yelp/detect-secrets
-// mise: pipx:detect-secrets
-detectsecrets = new Config.Step {
-  // needs a baseline
-  // create with `detect-secrets scan > .secrets.baseline`
-  // check will fail if file does not exist
-  check = "detect-secrets-hook --baseline .secrets.baseline {{files}}"
+detectsecrets = new MiseStep {
+  tool = new Tool {
+    tool = "pipx:detect-secrets"
+    config = "latest"
+  }
+  step = new Config.Step {
+    // needs a baseline
+    // create with `detect-secrets scan > .secrets.baseline`
+    // check will fail if file does not exist
+    check = "detect-secrets-hook --baseline .secrets.baseline {{files}}"
+  }
 }
 
 // https://github.com/sirwart/ripsecrets
-ripsecrets = new Config.Step {
-  check = "ripsecrets {{files}}"
+ripsecrets = new MiseStep {
+  tool = new Tool {
+    tool = "ripsecrets"
+    config = "latest"
+  }
+  step = new Config.Step {
+    check = "ripsecrets {{files}}"
+  }
 }
 
 // https://github.com/gitleaks/gitleaks
-gitleaks = new Config.Step {
-  // XXX scans whole folder if there are multiple files (see https://github.com/gitleaks/gitleaks/issues/1727)
-  check = "gitleaks dir -v {{files}}"
+gitleaks = new MiseStep {
+  tool = new Tool {
+    tool = "gitleaks"
+    // don't use latest as there may be breaking changes (even for minor version updates)
+    config = "8.30.0"
+  }
+  step = new Config.Step {
+    // XXX scans whole folder if there are multiple files (see https://github.com/gitleaks/gitleaks/issues/1727)
+    check = "gitleaks dir -v {{files}}"
+  }
 }
 
 // https://github.com/trufflesecurity/trufflehog
-trufflehog = new Config.Step {
-  check = "trufflehog filesystem {{files}} --fail"
+trufflehog = new MiseStep {
+  tool = new Tool {
+    tool = "trufflehog"
+    config = "latest"
+  }
+  step = new Config.Step {
+    check = "trufflehog filesystem {{files}} --fail"
+  }
 }
 
 // https://trivy.dev/docs/latest/scanner/secret/
-trivysecrets = new Config.Step {
-  // Note: trivy fs can only take one file/path as argument, so we can only scan the current directory and not pass the files
-  check = "trivy fs --exit-code 1 --scanners secret ."
+trivysecrets = new MiseStep {
+  tool = new Tool {
+    tool = "trivy"
+    config = "latest"
+  }
+  step = new Config.Step {
+    // Note: trivy fs can only take one file/path as argument, so we can only scan the current directory and not pass the files
+    check = "trivy fs --exit-code 1 --scanners secret ."
+  }
 }

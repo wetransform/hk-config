@@ -1,22 +1,51 @@
 import "./Config.pkl"
+import "./mise/Config.pkl" as Mise
+import "./Shared.pkl"
 
 function defaultHooks(
   autofix: Boolean,
-  useSteps: Mapping<String, Config.Step>,
+  useSteps: Mapping<String, Shared.Step>,
 ): Mapping<String, Config.Hook> = new Mapping<String, Config.Hook> {
+  local mappedSteps =
+    useSteps
+      .toMap()
+      .mapValues((k, v) ->
+        if (v is Config.Step)
+          v
+        else
+          v.step
+      )
+      .toMapping()
+
   ["pre-commit"] {
     fix = autofix
     stash = "git"
-    steps = useSteps
+    steps = mappedSteps
   }
   ["pre-push"] {
-    steps = useSteps
+    steps = mappedSteps
   }
   ["fix"] {
     fix = true
-    steps = useSteps
+    steps = mappedSteps
   }
   ["check"] {
-    steps = useSteps
+    steps = mappedSteps
   }
+}
+
+local hk_version = "1.25.0"
+
+function miseTools(useSteps: Mapping<String, Shared.Step>): Mapping<String, Mise.Tool> = (
+  useSteps
+    .toMap()
+    .values
+    .filter((s) -> s is Shared.MiseStep)
+    .map((s) -> s.tool)
+    .filter((t) -> t != null)
+    .distinctBy((t) -> t.tool)
+    .toMap((t) -> t.tool, (t) -> t.config)
+    .toMapping()
+) {
+  ["hk"] = hk_version
 }

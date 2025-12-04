@@ -5,7 +5,7 @@ import "../Builtins.pkl"
 import "../Config.pkl"
 import "../Shared.pkl"
 
-steps = new Mapping<String, Config.Step> {
+steps = new Mapping<String, Shared.Step> {
   // use prettier, in this case mainly intended for config files like JSON, YAML, etc.
   ["prettier"] = Shared.prettier
 
