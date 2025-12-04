@@ -15,4 +15,7 @@ steps = new Mapping<String, Config.Step> {
 
   // actionlint for GitHub Actions workflow files
   ["actionlint"] = Shared.actionlint
+
+  // terraform formatting
+  ["terraform"] = Builtins.terraform
 }
