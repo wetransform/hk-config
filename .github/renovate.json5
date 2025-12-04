@@ -1,6 +1,19 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["github>wetransform/renovate-config:self-hosted.json5"],
+  packageRules: [
+    // Group hk and pkl dependencies separately (mise tools and references in pkl files)
+    {
+      groupName: "hk",
+      groupSlug: "jdx-hk",
+      matchDepNames: ["hk", "jdx/hk"],
+    },
+    {
+      groupName: "pkl",
+      groupSlug: "apple-pkl",
+      matchDepNames: ["pkl", "apple/pkl"],
+    },
+  ],
   customManagers: [
     {
       description: "Version variables in pkl files",
