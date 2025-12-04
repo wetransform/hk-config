@@ -4,3 +4,4 @@
 # Reference presets that should apply to this repository
 presets:
   - renovate
+  - repo-release
