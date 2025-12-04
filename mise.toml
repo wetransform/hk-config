@@ -1,7 +1,7 @@
 [tools]
 # for git hooks
 hk = "1.26.0"
-pkl = "0.30.0"
+pkl = "0.30.1"
 
 [hooks]
 postinstall = "hk install --mise"
