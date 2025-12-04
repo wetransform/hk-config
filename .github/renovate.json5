@@ -5,10 +5,9 @@
     {
       description: "Version variables in pkl files",
       customType: "regex",
-      managerFilePatterns: ["Shared.pkl", "*.pkl"],
+      managerFilePatterns: ["**/*.pkl"],
       matchStrings: [
-        '// renovate:\\sdatasource=(?<datasource>.*?)\\sdepName=(?<depName>.*?)\
-\n.*(version|Version|VERSION)\\s*(:=|=|:)\\s*"?(?<currentValue>.*?)"?',
+        '.*renovate:\\s*datasource=(?<datasource>.*?)\\s*depName=(?<depName>.*?)\n.*(?:local\\s+)?(?<varName>\\w+)_version\\s*=\\s*"?(?<currentValue>[^"\n]+)"?',
       ],
       extractVersionTemplate: "^v?(?<version>.*)$",
     },
