@@ -1,4 +1,4 @@
 [tools]
 # for git hooks
-hk = "1.25.0"
+hk = "1.26.0"
 pkl = "0.30.0"
