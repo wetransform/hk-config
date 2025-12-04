@@ -49,11 +49,6 @@ env:
   # Renovate Automerge
   # RENOVATE_AUTOMERGE_TYPE: "branch"
   # RENOVATE_AUTOMERGE: "true"
-  # Host rules
-  # - Authentication to artifactory
-  # - Authentication to Docker Hub - examples for Docker see https://docs.renovatebot.com/docker/#registry-authentication
-  # - Host type github-tags is used to authenticate against the GitHub API for getting changelogs (among others) for private repos
-  RENOVATE_HOST_RULES: '[{"matchHost":"https://artifactory.wetransform.to/","username":"${{ secrets.WETF_ARTIFACTORY_USER }}","password":"${{ secrets.WETF_ARTIFACTORY_PASSWORD }}"},{"hostType":"docker","matchHost":"docker.io","username":"${{ secrets.DOCKER_HUB_RO_USERNAME }}","password":"${{ secrets.DOCKER_HUB_RO_PASSWORD }}"},{"hostType":"github-tags","matchHost":"https://api.github.com/repos/wetransform/","token":"${{ secrets.GH_PAT_READ_WETRANSFORM }}"},{"hostType":"npm","matchHost":"npm.pkg.github.com","token":"${{ secrets.GH_PAT }}"}]'
 
 permissions: read-all
 
