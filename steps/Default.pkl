@@ -11,12 +11,12 @@ steps = new Mapping<String, Config.Step> {
 
   // pkl file linter
   ["pkl"] = Shared.pkl
-
+  // and formatter
   ["pklformat"] = Shared.pklformat
 
   // actionlint for GitHub Actions workflow files
   ["actionlint"] = Shared.actionlint
 
-  // terraform formatting
+  // terraform formatting - assumes correct terraform is available, e.g. via mise or similar
   ["terraform"] = Builtins.terraform
 }
