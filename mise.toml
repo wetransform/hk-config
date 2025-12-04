@@ -1,4 +1,4 @@
 [tools]
 # for git hooks
-hk = "latest"
-pkl = "latest"
+hk = "1.25.0"
+pkl = "0.30.0"

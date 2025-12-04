@@ -1,0 +1,27 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["github>wetransform/renovate-config:self-hosted.json5"],
+  customManagers: [
+    {
+      description: "Version variables in pkl files",
+      customType: "regex",
+      managerFilePatterns: ["Shared.pkl", "*.pkl"],
+      matchStrings: [
+        '// renovate:\\sdatasource=(?<datasource>.*?)\\sdepName=(?<depName>.*?)\
+\n.*(version|Version|VERSION)\\s*(:=|=|:)\\s*"?(?<currentValue>.*?)"?',
+      ],
+      extractVersionTemplate: "^v?(?<version>.*)$",
+    },
+    {
+      description: "Versions of hk in pkl import/amends",
+      customType: "regex",
+      managerFilePatterns: ["Builtins.pkl", "Config.pkl"],
+      matchStrings: [
+        '(amends|import) "package://github.com/jdx/hk/releases/download/v(?<currentValue>\\d+\\.\\d+\\.\\d+)/hk@(?<currentValue2>\\d+\\.\\d+\\.\\d+)#',
+      ],
+      depNameTemplate: "jdx/hk",
+      datasourceTemplate: "github-releases",
+      extractVersionTemplate: "^v?(?<version>.*)$",
+    },
+  ],
+}

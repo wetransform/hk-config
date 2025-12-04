@@ -18,6 +18,7 @@ prettier = (Builtins.prettier) {
   exclude = List(".github/workflows/tf-*", "CHANGELOG.md")
 }
 
+// renovate: datasource=github-tags depName=apple/pkl
 local pkl_version = "0.30.0"
 local pkl_prefix = "mise x pkl@\(pkl_version) --"
 
@@ -78,6 +79,7 @@ ripsecrets = new Config.Step {
 // https://github.com/gitleaks/gitleaks
 gitleaks = new Config.Step {
   // don't use latest as there may be breaking changes (even for minor version updates)
+  // renovate: datasource=github-tags depName=gitleaks/gitleaks
   local gitleaks_version = "8.30.0"
   // XXX scans whole folder if there are multiple files (see https://github.com/gitleaks/gitleaks/issues/1727)
   check = "gitleaks dir -v {{files}}"
