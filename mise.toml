@@ -1,4 +1,4 @@
 [tools]
+# for git hooks
 hk = "latest"
 pkl = "latest"
-prettier = "3"

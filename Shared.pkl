@@ -5,24 +5,34 @@ actionlint = (Builtins.actionlint) {
   // extend to include actiion.yml/yaml files XXX turned out this is not supported by actionlint at the moment
   // glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml", "action.yml", "action.yaml")
 
+  prefix = "mise x actionlint --"
+
   // exclude managed tf- files which are generated
   exclude = List(".github/workflows/tf-*")
 }
 
 prettier = (Builtins.prettier) {
+  prefix = "mise x prettier --"
+
   // exclude files which are generated/managed
   exclude = List(".github/workflows/tf-*", "CHANGELOG.md")
 }
 
-pkl = Builtins.pkl
+local pkl_version = "0.30.0"
+local pkl_prefix = "mise x pkl@\(pkl_version) --"
+
+pkl = (Builtins.pkl) {
+  prefix = pkl_prefix
+}
 
 // Note: supported since pkl 0.30 - https://pkl-lang.org/main/current/release-notes/0.30.html
 // TODO use Builtins.pkl_format as soon as hk is released (>1.25.0)
 pklformat = new Config.Step {
   stage = "<JOB_FILES>"
   glob = "*.pkl"
+  prefix = pkl_prefix
   check = "pkl format --silent {{files}}"
-  // exit code of pkl format is 1 if changes were made, so we first attempt to write changes with -w, and if that fails, we run again with --silent to ensure a zero exit code on success
+  // exit code of pkl format is not zero if changes were made, so we first attempt to write changes with -w, and then run again with --silent to ensure a zero exit code on success
   fix = "pkl format -w {{files}} || pkl format --silent {{files}}"
 }
 
@@ -50,32 +60,39 @@ spotlessGradle = new Config.Step {
 // Secret detection tools
 
 // https://github.com/Yelp/detect-secrets
-// mise: pipx:detect-secrets
 detectsecrets = new Config.Step {
   // needs a baseline
   // create with `detect-secrets scan > .secrets.baseline`
   // check will fail if file does not exist
   check = "detect-secrets-hook --baseline .secrets.baseline {{files}}"
+
+  prefix = "mise x pipx:detect-secrets --"
 }
 
 // https://github.com/sirwart/ripsecrets
 ripsecrets = new Config.Step {
   check = "ripsecrets {{files}}"
+  prefix = "mise x ripsecrets --"
 }
 
 // https://github.com/gitleaks/gitleaks
 gitleaks = new Config.Step {
+  // don't use latest as there may be breaking changes (even for minor version updates)
+  local gitleaks_version = "8.30.0"
   // XXX scans whole folder if there are multiple files (see https://github.com/gitleaks/gitleaks/issues/1727)
   check = "gitleaks dir -v {{files}}"
+  prefix = "mise x gitleaks@\(gitleaks_version) --"
 }
 
 // https://github.com/trufflesecurity/trufflehog
 trufflehog = new Config.Step {
   check = "trufflehog filesystem {{files}} --fail"
+  prefix = "mise x trufflehog --"
 }
 
 // https://trivy.dev/docs/latest/scanner/secret/
 trivysecrets = new Config.Step {
   // Note: trivy fs can only take one file/path as argument, so we can only scan the current directory and not pass the files
   check = "trivy fs --exit-code 1 --scanners secret ."
+  prefix = "mise x trivy --"
 }
