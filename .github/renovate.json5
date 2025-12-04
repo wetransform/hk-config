@@ -5,7 +5,7 @@
     {
       description: "Version variables in pkl files",
       customType: "regex",
-      fileMatch: [".*\\.pkl$"],
+      managerFilePatterns: ["*.pkl"],
       matchStrings: [
         '\
 .*renovate:\
@@ -19,7 +19,7 @@
     {
       description: "Versions of hk in pkl import/amends",
       customType: "regex",
-      fileMatch: ["Builtins.pkl", "Config.pkl"],
+      managerFilePatterns: ["Builtins.pkl", "Config.pkl"],
       matchStrings: [
         '(amends|import) "package://github.com/jdx/hk/releases/download/v(?<currentValue>\\d+\\.\\d+\\.\\d+)/hk@(?<currentValue2>\\d+\\.\\d+\\.\\d+)#',
       ],
