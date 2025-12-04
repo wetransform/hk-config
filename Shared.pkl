@@ -70,3 +70,9 @@ gitleaks = new Config.Step {
 trufflehog = new Config.Step {
   check = "trufflehog filesystem {{files}} --fail"
 }
+
+// https://trivy.dev/docs/latest/scanner/secret/
+trivysecrets = new Config.Step {
+  // Note: trivy fs can only take one file/path as argument, so we can only scan the current directory and not pass the files
+  check = "trivy fs --exit-code 1 --scanners secret ."
+}
