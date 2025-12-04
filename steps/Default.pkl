@@ -13,6 +13,8 @@ steps = new Mapping<String, Config.Step> {
   // pkl file linter
   ["pkl"] = Shared.pkl
 
+  ["pklformat"] = Shared.pklformat
+
   // actionlint for GitHub Actions workflow files
   ["actionlint"] = Shared.actionlint
 
