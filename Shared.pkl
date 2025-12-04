@@ -30,14 +30,8 @@ pkl = (Builtins.pkl) {
 }
 
 // Note: supported since pkl 0.30 - https://pkl-lang.org/main/current/release-notes/0.30.html
-// TODO use Builtins.pkl_format as soon as hk is released (>1.25.0)
-pklformat = new Config.Step {
-  stage = "<JOB_FILES>"
-  glob = "*.pkl"
+pklformat = (Builtins.pkl_format) {
   prefix = pkl_prefix
-  check = "pkl format --silent {{files}}"
-  // exit code of pkl format is not zero if changes were made, so we first attempt to write changes with -w, and then run again with --silent to ensure a zero exit code on success
-  fix = "pkl format -w {{files}} || pkl format --silent {{files}}"
 }
 
 spotlessGradle = new Config.Step {
