@@ -48,7 +48,7 @@ spotlessGradle = new Config.Step {
 
 // https://github.com/Yelp/detect-secrets
 // mise: pipx:detect-secrets
-local detectsecrets = new Config.Step {
+detectsecrets = new Config.Step {
   // needs a baseline
   // create with `detect-secrets scan > .secrets.baseline`
   // check will fail if file does not exist
@@ -56,17 +56,17 @@ local detectsecrets = new Config.Step {
 }
 
 // https://github.com/sirwart/ripsecrets
-local ripsecrets = new Config.Step {
+ripsecrets = new Config.Step {
   check = "ripsecrets {{files}}"
 }
 
 // https://github.com/gitleaks/gitleaks
-local gitleaks = new Config.Step {
+gitleaks = new Config.Step {
   // XXX scans whole folder if there are multiple files (see https://github.com/gitleaks/gitleaks/issues/1727)
   check = "gitleaks dir -v {{files}}"
 }
 
 // https://github.com/trufflesecurity/trufflehog
-local trufflehog = new Config.Step {
+trufflehog = new Config.Step {
   check = "trufflehog filesystem {{files}} --fail"
 }
