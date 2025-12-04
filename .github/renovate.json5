@@ -11,28 +11,21 @@
 .*renovate:\
 \\sdatasource=(?<datasource>.*?)\
 \\sdepName=(?<depName>.*?)\
-(\\sversioning=(?<versioning>.*?))?\
 \n.*(version|Version|VERSION)\\s*(:=|=|:)\\s*"?(?<currentValue>.*?)\
-(@(?<currentDigest>sha256:[a-f0-9]+))?"?\
-(\\s+|\\s+.*)',
+"?',
       ],
-      versioningTemplate: "\
-{{#if versioning}}\
-{{{versioning}}}\
-{{else}}\
-semver-coerced\
-{{/if}}",
+      extractVersionTemplate: "^v?(?<version>.*)$",
     },
     {
       description: "Versions of hk in pkl import/amends",
       customType: "regex",
       fileMatch: ["Builtins.pkl", "Config.pkl"],
       matchStrings: [
-        '(amends|import) "package://github.com/jdx/hk/releases/download/v(?<currentVersion>\\d+\\.\\d+\\.\\d+)/hk@(?<currentVersion2>\\d+\\.\\d+\\.\\d+)#',
+        '(amends|import) "package://github.com/jdx/hk/releases/download/v(?<currentValue>\\d+\\.\\d+\\.\\d+)/hk@(?<currentValue2>\\d+\\.\\d+\\.\\d+)#',
       ],
       depNameTemplate: "jdx/hk",
       datasourceTemplate: "github-releases",
-      versioningTemplate: "semver-coerced",
+      extractVersionTemplate: "^v?(?<version>.*)$",
     },
   ],
 }
