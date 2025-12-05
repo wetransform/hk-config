@@ -29,7 +29,7 @@
       customType: "regex",
       managerFilePatterns: ["Builtins.pkl", "Config.pkl"],
       matchStrings: [
-        '(amends|import) "package://github.com/jdx/hk/releases/download/v(?<currentValue>\\d+\\.\\d+\\.\\d+)/hk@(?<currentValue2>\\d+\\.\\d+\\.\\d+)#',
+        '(amends|import)\\s+"package://github.com/jdx/hk/releases/download/v(?<currentValue>\\d+\\.\\d+\\.\\d+)/hk@(?<currentValue2>\\d+\\.\\d+\\.\\d+)#',
       ],
       depNameTemplate: "jdx/hk",
       datasourceTemplate: "github-releases",
