@@ -1,3 +1,9 @@
+## [1.3.2](https://github.com/wetransform/hk-config/compare/v1.3.1...v1.3.2) (2025-12-05)
+
+### Bug Fixes
+
+* respect .gitleaks.toml file if present ([7ec78b1](https://github.com/wetransform/hk-config/commit/7ec78b1ee0de8f34c146cb1768fcf2f5bb9ff197))
+
 ## [1.3.1](https://github.com/wetransform/hk-config/compare/v1.3.0...v1.3.1) (2025-12-05)
 
 ### Bug Fixes
