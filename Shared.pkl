@@ -82,8 +82,9 @@ gitleaks = new Config.Step {
   // apart from unnecessary performance impact, this also causes files that are in .gitignore to be scanned
   // check = "gitleaks dir -v {{files}}"
   // workaround: run for each file individually
+  // Note: running with individual files it does not pick up .gitleaks.toml automatically, so we need to specify it if it exists
   check =
-    "sh -c 'set -e; for file in \"$@\"; do echo \"Scanning file $file\"; gitleaks dir --no-banner -v \"$file\"; done' _ {{files}}"
+    "sh -c 'set -e; for file in \"$@\"; do echo \"Scanning file $file\"; if [ -f .gitleaks.toml ]; then gitleaks dir --config .gitleaks.toml --no-banner -v \"$file\"; else gitleaks dir --no-banner -v \"$file\"; fi; done' _ {{files}}"
   prefix = "mise x gitleaks@\(gitleaks_version) --"
   // also show stdout to include info on scanned file and found secrets in the output
   output_summary = "combined"
