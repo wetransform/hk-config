@@ -79,8 +79,14 @@ gitleaks = new Config.Step {
   // renovate: datasource=github-tags depName=gitleaks/gitleaks
   local gitleaks_version = "8.30.0"
   // XXX scans whole folder if there are multiple files (see https://github.com/gitleaks/gitleaks/issues/1727)
-  check = "gitleaks dir -v {{files}}"
+  // apart from unnecessary performance impact, this also causes files that are in .gitignore to be scanned
+  // check = "gitleaks dir -v {{files}}"
+  // workaround: run for each file individually
+  check =
+    "sh -c 'set -e; for file in \"$@\"; do echo \"Scanning file $file\"; gitleaks dir --no-banner -v \"$file\"; done' _ {{files}}"
   prefix = "mise x gitleaks@\(gitleaks_version) --"
+  // also show stdout to include info on scanned file and found secrets in the output
+  output_summary = "combined"
 }
 
 // https://github.com/trufflesecurity/trufflehog
