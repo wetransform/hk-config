@@ -1,6 +1,9 @@
 import "./Builtins.pkl"
 import "./Config.pkl"
 
+local ci_check_profile = "ci-check-all"
+local not_ci_check_profile = "!\(ci_check_profile)"
+
 actionlint = (Builtins.actionlint) {
   // extend to include actiion.yml/yaml files XXX turned out this is not supported by actionlint at the moment
   // glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml", "action.yml", "action.yaml")
@@ -73,21 +76,36 @@ ripsecrets = new Config.Step {
   prefix = "mise x ripsecrets --"
 }
 
+// don't use latest gitleaks version as there may be breaking changes (even for minor version updates)
+// renovate: datasource=github-tags depName=gitleaks/gitleaks
+local gitleaks_version = "8.30.0"
+local gitleaks_prefix = "mise x gitleaks@\(gitleaks_version) --"
+
 // https://github.com/gitleaks/gitleaks
 gitleaks = new Config.Step {
-  // don't use latest as there may be breaking changes (even for minor version updates)
-  // renovate: datasource=github-tags depName=gitleaks/gitleaks
-  local gitleaks_version = "8.30.0"
   // XXX scans whole folder if there are multiple files (see https://github.com/gitleaks/gitleaks/issues/1727)
   // apart from unnecessary performance impact, this also causes files that are in .gitignore to be scanned
   // check = "gitleaks dir -v {{files}}"
-  // workaround: run for each file individually
+  // workaround: run for each file individually - this has a big performance impact though
   // Note: running with individual files it does not pick up .gitleaks.toml automatically, so we need to specify it if it exists
   check =
     "sh -c 'set -e; for file in \"$@\"; do echo \"Scanning file $file\"; if [ -f .gitleaks.toml ]; then gitleaks dir --config .gitleaks.toml --no-banner -v \"$file\"; else gitleaks dir --no-banner -v \"$file\"; fi; done' _ {{files}}"
-  prefix = "mise x gitleaks@\(gitleaks_version) --"
+  prefix = gitleaks_prefix
   // also show stdout to include info on scanned file and found secrets in the output
   output_summary = "combined"
+  // run checks in parallel for many files
+  // Note: gain depends on number of CPU threads
+  batch = true
+  // Do not run on CI check where all files are checked together, because of bad performance
+  // Note: instead, use gitleaks_git step below to scan the git history in CI
+  profiles = List(not_ci_check_profile)
+}
+
+gitleaks_git = new Config.Step {
+  profiles = List(ci_check_profile)
+  // perform a check based on git, also taking history into account
+  check = "gitleaks git -v --redact"
+  prefix = gitleaks_prefix
 }
 
 // https://github.com/trufflesecurity/trufflehog
