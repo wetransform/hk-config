@@ -1,3 +1,9 @@
+## [1.4.0](https://github.com/wetransform/hk-config/compare/v1.3.2...v1.4.0) (2025-12-12)
+
+### Features
+
+* improvements to gitleaks scanning ([2776fdc](https://github.com/wetransform/hk-config/commit/2776fdc500b91745451e6db0e88a8d2adb345497))
+
 ## [1.3.2](https://github.com/wetransform/hk-config/compare/v1.3.1...v1.3.2) (2025-12-05)
 
 ### Bug Fixes
