@@ -120,3 +120,23 @@ trivysecrets = new Config.Step {
   check = "trivy fs --exit-code 1 --scanners secret ."
   prefix = "mise x trivy --"
 }
+
+// https://docs.renovatebot.com/config-validation/
+renovate = new Config.Step {
+  glob =
+    List(
+      "renovate.json",
+      "renovate.json5",
+      ".github/renovate.json",
+      ".github/renovate.json5",
+      ".gitlab/renovate.json",
+      ".gitlab/renovate.json5",
+      ".renovaterc",
+      ".renovaterc.json",
+      ".renovaterc.json5",
+    )
+  // Note: strict flag enables failing for migration warnings as well
+  // specifying no file path runs for default config file paths (only one file is expected to be present)
+  check = "renovate-config-validator --strict"
+  prefix = "mise exec npm:renovate -- "
+}
