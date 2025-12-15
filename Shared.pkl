@@ -8,7 +8,9 @@ actionlint = (Builtins.actionlint) {
   // extend to include actiion.yml/yaml files XXX turned out this is not supported by actionlint at the moment
   // glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml", "action.yml", "action.yaml")
 
-  prefix = "mise x actionlint --"
+  // also provide shellcheck as actionlint picks it up automatically if present
+  // since it seems to be available on GitHub runners, we provide it in general for consistency
+  prefix = "mise x actionlint shellcheck --"
 
   // exclude managed tf- files which are generated
   exclude = List(".github/workflows/tf-*")
