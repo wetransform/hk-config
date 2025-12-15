@@ -1,3 +1,9 @@
+## [1.5.0](https://github.com/wetransform/hk-config/compare/v1.4.0...v1.5.0) (2025-12-15)
+
+### Features
+
+* add renovate validation check ([d32bfe6](https://github.com/wetransform/hk-config/commit/d32bfe609f4639182bd6d7ecd9e3e74ba990bbc4))
+
 ## [1.4.0](https://github.com/wetransform/hk-config/compare/v1.3.2...v1.4.0) (2025-12-12)
 
 ### Features
