@@ -1,3 +1,9 @@
+## [1.5.1](https://github.com/wetransform/hk-config/compare/v1.5.0...v1.5.1) (2025-12-15)
+
+### Bug Fixes
+
+* provide shellcheck for actionlint to ensure consistency ([f09c177](https://github.com/wetransform/hk-config/commit/f09c177aff37c15811b830ed36f7806cc01d57f4))
+
 ## [1.5.0](https://github.com/wetransform/hk-config/compare/v1.4.0...v1.5.0) (2025-12-15)
 
 ### Features
