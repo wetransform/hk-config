@@ -23,4 +23,7 @@ steps = new Mapping<String, Config.Step> {
   // include secret scanning by default
   ["gitleaks"] = Shared.gitleaks
   ["gitleaks-git"] = Shared.gitleaks_git
+
+  // renovate config validation
+  ["renovate"] = Shared.renovate
 }
