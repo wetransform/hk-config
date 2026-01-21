@@ -16,7 +16,7 @@
     {
       description: "version changes in pkl files should allow a release (is not a chore)",
       matchManagers: ["custom.regex"],
-      semanticCommitType: "fix"
+      semanticCommitType: "fix",
     },
   ],
   customManagers: [
