@@ -1,7 +1,7 @@
 [tools]
 # for git hooks
 hk = "1.31.0"
-pkl = "0.30.1"
+pkl = "0.30.2"
 
 [hooks]
 enter = "mise x -- hk install --mise"
