@@ -14,8 +14,8 @@
       matchDepNames: ["pkl", "apple/pkl"],
     },
     {
-      description: "hk update should allow a release (is not a chore)",
-      matchDepNames: ["jdx/hk"],
+      description: "version changes in pkl files should allow a release (is not a chore)",
+      matchManagers: ["custom.regex"],
       semanticCommitType: "fix"
     },
   ],
