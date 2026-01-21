@@ -13,6 +13,11 @@
       groupSlug: "apple-pkl",
       matchDepNames: ["pkl", "apple/pkl"],
     },
+    {
+      description: "hk update should allow a release (is not a chore)",
+      matchDepNames: ["jdx/hk"],
+      semanticCommitType: "fix"
+    },
   ],
   customManagers: [
     {
