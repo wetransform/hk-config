@@ -1,3 +1,18 @@
+## [2.0.0](https://github.com/wetransform/hk-config/compare/v1.5.1...v2.0.0) (2026-01-27)
+
+### ⚠ BREAKING CHANGES
+
+* Type for list of steps changed, may now also be an
+extended step type that includes more information.
+
+### Features
+
+* use gitleaks scan for git history as default ([58141f1](https://github.com/wetransform/hk-config/commit/58141f1aabeb38f08adc0653586d8828d269acda))
+
+### Bug Fixes
+
+* **deps:** update hk to v1.32.0 ([b1889b7](https://github.com/wetransform/hk-config/commit/b1889b74b4e52a3f593ce9223251baf16f49dce9))
+
 ## [1.5.1](https://github.com/wetransform/hk-config/compare/v1.5.0...v1.5.1) (2025-12-15)
 
 ### Bug Fixes
