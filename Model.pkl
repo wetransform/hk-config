@@ -1,0 +1,18 @@
+import "./Config.pkl"
+
+// extensions to hk model
+
+class ExtendedStep {
+  // core step to extend
+  step: Config.Step
+
+  // additional information
+
+  // disable including step in specific contexts
+  disable_pre_commit: Boolean = false
+  disable_pre_push: Boolean = false
+  disable_check: Boolean = false
+  disable_fix: Boolean = false
+}
+
+typealias Step = (Config.Step | ExtendedStep)

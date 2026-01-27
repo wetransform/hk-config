@@ -1,22 +1,58 @@
 import "./Config.pkl"
+import "./Model.pkl"
+import "./Shared.pkl"
 
 function defaultHooks(
   autofix: Boolean,
-  useSteps: Mapping<String, Config.Step>,
+  useSteps: Mapping<String, Model.Step>,
 ): Mapping<String, Config.Hook> = new Mapping<String, Config.Hook> {
+  local extractValue = (k, v) ->
+    if (v is Config.Step)
+      v
+    else
+      v.step
+
+  local precommitSteps =
+    useSteps
+      .toMap()
+      .filter((k, v) -> !(v is Model.ExtendedStep && v.disable_pre_commit))
+      .mapValues(extractValue)
+      .toMapping()
+
+  local prepushSteps =
+    useSteps
+      .toMap()
+      .filter((k, v) -> !(v is Model.ExtendedStep && v.disable_pre_push))
+      .mapValues(extractValue)
+      .toMapping()
+
+  local checkSteps =
+    useSteps
+      .toMap()
+      .filter((k, v) -> !(v is Model.ExtendedStep && v.disable_check))
+      .mapValues(extractValue)
+      .toMapping()
+
+  local fixSteps =
+    useSteps
+      .toMap()
+      .filter((k, v) -> !(v is Model.ExtendedStep && v.disable_fix))
+      .mapValues(extractValue)
+      .toMapping()
+
   ["pre-commit"] {
     fix = autofix
     stash = "git"
-    steps = useSteps
+    steps = precommitSteps
   }
   ["pre-push"] {
-    steps = useSteps
+    steps = prepushSteps
   }
   ["fix"] {
     fix = true
-    steps = useSteps
+    steps = fixSteps
   }
   ["check"] {
-    steps = useSteps
+    steps = checkSteps
   }
 }
