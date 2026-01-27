@@ -145,9 +145,10 @@ You can also reuse the function that creates the hooks mapping to avoid boilerpl
 ```pkl
 amends "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Config.pkl"
 import "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Shared.pkl"
+import "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Model.pkl"
 import "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Functions.pkl"
 
-local linters = new Mapping<String, Step> {
+local linters = new Mapping<String, Model.Step> {
   // use shared linters from Shared.pkl
   ["prettier"] = Shared.prettier
   ["pkl"] = Shared.pkl

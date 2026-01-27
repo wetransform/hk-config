@@ -3,9 +3,10 @@
 */
 import "../Builtins.pkl"
 import "../Config.pkl"
+import "../Model.pkl"
 import "../Shared.pkl"
 
-steps = new Mapping<String, Config.Step> {
+steps = new Mapping<String, Model.Step> {
   // use prettier, in this case mainly intended for config files like JSON, YAML, etc.
   ["prettier"] = Shared.prettier
 
@@ -22,7 +23,7 @@ steps = new Mapping<String, Config.Step> {
 
   // include secret scanning by default
   ["gitleaks"] = Shared.gitleaks
-  ["gitleaks-git"] = Shared.gitleaks_git
+  ["gitleaks_ci"] = Shared.gitleaks_ci
 
   // renovate config validation
   ["renovate"] = Shared.renovate

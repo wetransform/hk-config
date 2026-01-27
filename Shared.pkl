@@ -1,8 +1,13 @@
 import "./Builtins.pkl"
 import "./Config.pkl"
+import "./Model.pkl"
+
+// profiles for differentiating between CI check and regular runs
 
 local ci_check_profile = "ci-check-all"
 local not_ci_check_profile = "!\(ci_check_profile)"
+
+// common step definitions
 
 actionlint = (Builtins.actionlint) {
   // extend to include actiion.yml/yaml files XXX turned out this is not supported by actionlint at the moment
@@ -84,7 +89,7 @@ local gitleaks_version = "8.30.0"
 local gitleaks_prefix = "mise x gitleaks@\(gitleaks_version) --"
 
 // https://github.com/gitleaks/gitleaks
-gitleaks = new Config.Step {
+gitleaks_workaround = new Config.Step {
   // XXX scans whole folder if there are multiple files (see https://github.com/gitleaks/gitleaks/issues/1727)
   // apart from unnecessary performance impact, this also causes files that are in .gitignore to be scanned
   // check = "gitleaks dir -v {{files}}"
@@ -103,11 +108,32 @@ gitleaks = new Config.Step {
   profiles = List(not_ci_check_profile)
 }
 
+// companion for above step using workaround to run complete check in CI
 gitleaks_git = new Config.Step {
   profiles = List(ci_check_profile)
   // perform a check based on git, also taking history into account
   check = "gitleaks git -v --redact"
   prefix = gitleaks_prefix
+}
+
+// always uses git-based scan to include history, but don't run in pre-commit hooks because changes are not yet committed
+// used because for scanning multiple files efficiently for a list of files, changes in gitleaks are required (see gitleaks_workaround above)
+gitleaks = new Model.ExtendedStep {
+  step = new Config.Step {
+    profiles = List(not_ci_check_profile)
+    check = "gitleaks git -v"
+    prefix = gitleaks_prefix
+  }
+  disable_pre_commit = true
+}
+// in CI, redact found secrets in output
+gitleaks_ci = new Model.ExtendedStep {
+  step = new Config.Step {
+    profiles = List(ci_check_profile)
+    check = "gitleaks git -v --redact"
+    prefix = gitleaks_prefix
+  }
+  disable_pre_commit = true
 }
 
 // https://github.com/trufflesecurity/trufflehog
