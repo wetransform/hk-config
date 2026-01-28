@@ -44,26 +44,28 @@ pklformat = (Builtins.pkl_format) {
   prefix = pkl_prefix
 }
 
-spotlessGradle = new Config.Step {
+function spotlessGradleStep(addArgsCheck: String, addArgsFix: String): Config.Step = new Config.Step {
   // define relevant file types for default Spotless configuration to avoid unnecessary runs
   glob = List("*.gradle", "*.java", "*.scala", "*.sc", "*.groovy", "*.kt", "*.kts", "*.md")
 
   check = new Config.Script {
-    linux = "./gradlew spotlessCheck"
-    macos = "./gradlew spotlessCheck"
-    windows = "gradlew.bat spotlessCheck"
+    linux = "./gradlew spotlessCheck \(addArgsCheck)"
+    macos = "./gradlew spotlessCheck \(addArgsCheck)"
+    windows = "gradlew.bat spotlessCheck \(addArgsCheck)"
   }
 
   fix = new Config.Script {
-    linux = "./gradlew spotlessApply"
-    macos = "./gradlew spotlessApply"
-    windows = "gradlew.bat spotlessApply"
+    linux = "./gradlew spotlessApply \(addArgsFix)"
+    macos = "./gradlew spotlessApply \(addArgsFix)"
+    windows = "gradlew.bat spotlessApply \(addArgsFix)"
   }
 
   // Only run if Gradle wrapper exists - FIXME does this work with Windows?
   // condition = "test -d gradle/wrapper" FIXME does not actually work like this - based on outdated example
   //TODO reevaluate at a later time if we can add such a condition, for now we assume if this is imported, the project uses Gradle
 }
+
+spotlessGradle = spotlessGradleStep("", "")
 
 // Secret detection tools
 
