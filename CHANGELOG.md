@@ -1,3 +1,9 @@
+## [2.1.0](https://github.com/wetransform/hk-config/compare/v2.0.0...v2.1.0) (2026-01-28)
+
+### Features
+
+* add function for custom Gradle spotless step ([a4d8618](https://github.com/wetransform/hk-config/commit/a4d8618f5ecc6ae271f770b1e4039e15fd5a72bc))
+
 ## [2.0.0](https://github.com/wetransform/hk-config/compare/v1.5.1...v2.0.0) (2026-01-27)
 
 ### ⚠ BREAKING CHANGES
