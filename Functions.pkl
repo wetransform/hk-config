@@ -41,9 +41,10 @@ function defaultHooks(
       .toMapping()
 
   ["pre-commit"] {
-    fix = autofix
-    stash = "git"
+    fix = true
+    fail_on_fix = !autofix
     steps = precommitSteps
+    stage = false
   }
   ["pre-push"] {
     steps = prepushSteps
