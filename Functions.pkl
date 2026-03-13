@@ -44,7 +44,8 @@ function defaultHooks(
     fix = true
     fail_on_fix = !autofix
     steps = precommitSteps
-    stage = false
+    stage = true
+    stash = "git"
   }
   ["pre-push"] {
     steps = prepushSteps
