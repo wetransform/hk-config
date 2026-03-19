@@ -1,3 +1,15 @@
+## [2.1.1](https://github.com/wetransform/hk-config/compare/v2.1.0...v2.1.1) (2026-03-19)
+
+### Bug Fixes
+
+* **deps:** update hk to v1.35.0 ([8a5226f](https://github.com/wetransform/hk-config/commit/8a5226feb3470643b8338bb7821f127c05dd401b))
+* **deps:** update hk to v1.36.0 ([6ccbca2](https://github.com/wetransform/hk-config/commit/6ccbca244636ffb1bf28a742783006c4a36f3452))
+* **deps:** update hk to v1.37.0 ([294f878](https://github.com/wetransform/hk-config/commit/294f8782fc148ea97e9b67ac5de125e7bba3d65e))
+* **deps:** update hk to v1.38.0 ([26fc98e](https://github.com/wetransform/hk-config/commit/26fc98e6ecfe30051131dd108df34ca51ad46282))
+* **deps:** update pkl to v0.31.0 ([4cea2f4](https://github.com/wetransform/hk-config/commit/4cea2f4a795b8d8803fe322bd51c26e0c63c1a78))
+* **gitleaks:** do not run gitleaks with fix command ([b007fa2](https://github.com/wetransform/hk-config/commit/b007fa25ccdd0d443f8fa6c018cc65fe088c3b2f))
+* **spotless:** only run apply on fix ([1d55c94](https://github.com/wetransform/hk-config/commit/1d55c94788cb03b6eb87041dfa18985475a490a3))
+
 ## [2.1.0](https://github.com/wetransform/hk-config/compare/v2.0.0...v2.1.0) (2026-01-28)
 
 ### Features
