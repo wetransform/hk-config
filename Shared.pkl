@@ -127,6 +127,7 @@ gitleaks = new Model.ExtendedStep {
     prefix = gitleaks_prefix
   }
   disable_pre_commit = true
+  disable_fix = true
 }
 // in CI, redact found secrets in output
 gitleaks_ci = new Model.ExtendedStep {
