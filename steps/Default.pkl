@@ -27,4 +27,7 @@ steps = new Mapping<String, Model.Step> {
 
   // renovate config validation
   ["renovate"] = Shared.renovate
+
+  // yaml schema validation
+  ["yaml-schema"] = Shared.yaml_schema
 }

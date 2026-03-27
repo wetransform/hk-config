@@ -173,3 +173,84 @@ renovate = new Config.Step {
   check = "renovate-config-validator --strict"
   prefix = "mise exec npm:renovate -- "
 }
+
+// Validate YAML files against JSON schemas specified in comments at the top of the file,
+// using the `check-jsonschema` tool from pipx (which supports both local and remote schemas).
+//
+// Supported comment formats (within the first 5 lines of the file):
+//   # yaml-language-server: $schema=path/to/schema.json
+//   # yaml-language-server: $schema=http://example.com/schema.json
+//   # $schema: path/to/schema.json
+//   # $schema: http://example.com/schema.json
+//
+// The notations with "$schema:" is preferred as it is supported by both IntelliJ and YAML Language Server
+// (used for example by VS Code's YAML extension), while the "yaml-language-server: $schema=" format is only
+// supported by the YAML Language Server.
+//
+yaml_schema = new Config.Step {
+  glob = List("**/*.yaml", "**/*.yml")
+  shell = "mise x pipx:check-jsonschema -- bash -o errexit -c"
+  check =
+    #"""
+    failed=0
+    for f in {{files}}; do
+        # Extract schema from the first 5 lines of the file
+        schema=$(head -5 "$f" | sed -n \
+            -e 's/^#[[:space:]]*yaml-language-server:[[:space:]]*\$schema=\(.*\)/\1/p' \
+            -e 's/^#[[:space:]]*\$schema:[[:space:]]*\(.*\)/\1/p' \
+        | head -1 | sed 's/[[:space:]]*$//')
+
+        if [ -z "$schema" ]; then
+            # No schema comment found — skip this file silently
+            continue
+        fi
+
+        # Resolve relative paths relative to the YAML file's directory
+        if [[ "$schema" != http://* && "$schema" != https://* ]]; then
+            schema="$(dirname "$f")/$schema"
+        fi
+
+        echo "Validating $f against $schema"
+        if ! check-jsonschema --schemafile "$schema" "$f"; then
+            failed=1
+        fi
+    done
+    exit $failed
+    """#
+  tests {
+    ["skips file without schema comment"] {
+      run = "check"
+      write {
+        ["{{tmp}}/no-schema.yaml"] = "key: value\n"
+      }
+      expect { code = 0 }
+    }
+    ["passes valid YAML with $schema comment"] {
+      run = "check"
+      write {
+        ["{{tmp}}/schema.json"] =
+          #"{"type":"object","required":["name"],"properties":{"name":{"type":"string"}}}"#
+        ["{{tmp}}/valid.yaml"] = "# $schema: schema.json\nname: hello\n"
+      }
+      expect { code = 0 }
+    }
+    ["passes valid YAML with yaml-language-server comment"] {
+      run = "check"
+      write {
+        ["{{tmp}}/schema.json"] =
+          #"{"type":"object","required":["name"],"properties":{"name":{"type":"string"}}}"#
+        ["{{tmp}}/valid.yaml"] = "# yaml-language-server: $schema=schema.json\nname: hello\n"
+      }
+      expect { code = 0 }
+    }
+    ["fails invalid YAML against schema"] {
+      run = "check"
+      write {
+        ["{{tmp}}/schema.json"] =
+          #"{"type":"object","required":["name"],"properties":{"name":{"type":"string"}}}"#
+        ["{{tmp}}/invalid.yaml"] = "# $schema: schema.json\nother: value\n"
+      }
+      expect { code = 1 }
+    }
+  }
+}
