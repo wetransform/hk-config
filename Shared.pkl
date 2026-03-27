@@ -195,7 +195,7 @@ yaml_schema = new Config.Step {
     failed=0
     for f in {{files}}; do
         # Extract schema from the first 5 lines of the file
-        schema=$(head -5 "$f" | sed -n \
+        schema=$(head -5 "$f" | tr -d '\r' | sed -n \
             -e 's/^#[[:space:]]*yaml-language-server:[[:space:]]*\$schema=\(.*\)/\1/p' \
             -e 's/^#[[:space:]]*\$schema:[[:space:]]*\(.*\)/\1/p' \
         | head -1 | sed 's/[[:space:]]*$//')
@@ -206,9 +206,10 @@ yaml_schema = new Config.Step {
         fi
 
         # Resolve relative paths relative to the YAML file's directory
-        if [[ "$schema" != http://* && "$schema" != https://* ]]; then
-            schema="$(dirname "$f")/$schema"
-        fi
+        case "$schema" in
+            http://*|https://*) ;;
+            *) schema="$(dirname "$f")/$schema" ;;
+        esac
 
         echo "Validating $f against $schema"
         if ! check-jsonschema --schemafile "$schema" "$f"; then
@@ -234,7 +235,7 @@ yaml_schema = new Config.Step {
           #"{"type":"object","required":["name"],"properties":{"name":{"type":"string"}}}"#
         ["valid.yaml"] = "# $schema: schema.json\nname: hello\n"
       }
-      expect { code = 0 }
+      expect { code = 0; stdout = "Validating" }
     }
     ["passes valid YAML with yaml-language-server comment"] {
       run = "check"
@@ -244,7 +245,7 @@ yaml_schema = new Config.Step {
           #"{"type":"object","required":["name"],"properties":{"name":{"type":"string"}}}"#
         ["valid.yaml"] = "# yaml-language-server: $schema=schema.json\nname: hello\n"
       }
-      expect { code = 0 }
+      expect { code = 0; stdout = "Validating" }
     }
     ["fails invalid YAML against schema"] {
       run = "check"
