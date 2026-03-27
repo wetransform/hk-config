@@ -220,35 +220,39 @@ yaml_schema = new Config.Step {
   tests {
     ["skips file without schema comment"] {
       run = "check"
+      tmpdir = true
       write {
-        ["{{tmp}}/no-schema.yaml"] = "key: value\n"
+        ["no-schema.yaml"] = "key: value\n"
       }
       expect { code = 0 }
     }
     ["passes valid YAML with $schema comment"] {
       run = "check"
+      tmpdir = true
       write {
-        ["{{tmp}}/schema.json"] =
+        ["schema.json"] =
           #"{"type":"object","required":["name"],"properties":{"name":{"type":"string"}}}"#
-        ["{{tmp}}/valid.yaml"] = "# $schema: schema.json\nname: hello\n"
+        ["valid.yaml"] = "# $schema: schema.json\nname: hello\n"
       }
       expect { code = 0 }
     }
     ["passes valid YAML with yaml-language-server comment"] {
       run = "check"
+      tmpdir = true
       write {
-        ["{{tmp}}/schema.json"] =
+        ["schema.json"] =
           #"{"type":"object","required":["name"],"properties":{"name":{"type":"string"}}}"#
-        ["{{tmp}}/valid.yaml"] = "# yaml-language-server: $schema=schema.json\nname: hello\n"
+        ["valid.yaml"] = "# yaml-language-server: $schema=schema.json\nname: hello\n"
       }
       expect { code = 0 }
     }
     ["fails invalid YAML against schema"] {
       run = "check"
+      tmpdir = true
       write {
-        ["{{tmp}}/schema.json"] =
+        ["schema.json"] =
           #"{"type":"object","required":["name"],"properties":{"name":{"type":"string"}}}"#
-        ["{{tmp}}/invalid.yaml"] = "# $schema: schema.json\nother: value\n"
+        ["invalid.yaml"] = "# $schema: schema.json\nother: value\n"
       }
       expect { code = 1 }
     }
