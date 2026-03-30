@@ -143,7 +143,7 @@ ripsecrets = new Config.Step {
 
 // don't use latest gitleaks version as there may be breaking changes (even for minor version updates)
 // renovate: datasource=github-tags depName=gitleaks/gitleaks
-local gitleaks_version = "8.30.0"
+local gitleaks_version = "8.30.1"
 local gitleaks_prefix = "mise x gitleaks@\(gitleaks_version) --"
 
 // https://github.com/gitleaks/gitleaks
