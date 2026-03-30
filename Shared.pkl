@@ -9,20 +9,28 @@ local not_ci_check_profile = "!\(ci_check_profile)"
 
 // common step definitions
 
+// renovate: datasource=github-tags depName=rhysd/actionlint
+local actionlint_version = "1.7.11"
+// renovate: datasource=github-tags depName=koalaman/shellcheck
+local shellcheck_version = "0.11.0"
+
 actionlint = (Builtins.actionlint) {
   // extend to include actiion.yml/yaml files XXX turned out this is not supported by actionlint at the moment
   // glob = List(".github/workflows/*.yml", ".github/workflows/*.yaml", "action.yml", "action.yaml")
 
   // also provide shellcheck as actionlint picks it up automatically if present
   // since it seems to be available on GitHub runners, we provide it in general for consistency
-  prefix = "mise x actionlint shellcheck --"
+  prefix = "mise x actionlint@\(actionlint_version) shellcheck@\(shellcheck_version) --"
 
   // exclude managed tf- files which are generated
   exclude = List(".github/workflows/tf-*")
 }
 
+// renovate: datasource=npm depName=prettier
+local prettier_version = "3.8.1"
+
 prettier = (Builtins.prettier) {
-  prefix = "mise x prettier --"
+  prefix = "mise x prettier@\(prettier_version) --"
 
   // batching seems to cause problems in combination with using `mise x`
   batch = false
@@ -72,19 +80,25 @@ spotlessGradle = spotlessGradleStep("", "")
 // Secret detection tools
 
 // https://github.com/Yelp/detect-secrets
+// renovate: datasource=pypi depName=detect-secrets
+local detect_secrets_version = "1.5.0"
+
 detectsecrets = new Config.Step {
   // needs a baseline
   // create with `detect-secrets scan > .secrets.baseline`
   // check will fail if file does not exist
   check = "detect-secrets-hook --baseline .secrets.baseline {{files}}"
 
-  prefix = "mise x pipx:detect-secrets --"
+  prefix = "mise x pipx:detect-secrets@\(detect_secrets_version) --"
 }
 
 // https://github.com/sirwart/ripsecrets
+// renovate: datasource=github-tags depName=sirwart/ripsecrets
+local ripsecrets_version = "0.1.11"
+
 ripsecrets = new Config.Step {
   check = "ripsecrets {{files}}"
-  prefix = "mise x ripsecrets --"
+  prefix = "mise x ripsecrets@\(ripsecrets_version) --"
 }
 
 // don't use latest gitleaks version as there may be breaking changes (even for minor version updates)
@@ -142,19 +156,28 @@ gitleaks_ci = new Model.ExtendedStep {
 }
 
 // https://github.com/trufflesecurity/trufflehog
+// renovate: datasource=github-tags depName=trufflesecurity/trufflehog
+local trufflehog_version = "3.94.1"
+
 trufflehog = new Config.Step {
   check = "trufflehog filesystem {{files}} --fail"
-  prefix = "mise x trufflehog --"
+  prefix = "mise x trufflehog@\(trufflehog_version) --"
 }
 
 // https://trivy.dev/docs/latest/scanner/secret/
+// renovate: datasource=github-tags depName=aquasecurity/trivy
+local trivy_version = "0.69.3"
+
 trivysecrets = new Config.Step {
   // Note: trivy fs can only take one file/path as argument, so we can only scan the current directory and not pass the files
   check = "trivy fs --exit-code 1 --scanners secret ."
-  prefix = "mise x trivy --"
+  prefix = "mise x trivy@\(trivy_version) --"
 }
 
 // https://docs.renovatebot.com/config-validation/
+// renovate: datasource=npm depName=renovate
+local renovate_version = "43.99.1"
+
 renovate = new Config.Step {
   glob =
     List(
@@ -171,7 +194,7 @@ renovate = new Config.Step {
   // Note: strict flag enables failing for migration warnings as well
   // specifying no file path runs for default config file paths (only one file is expected to be present)
   check = "renovate-config-validator --strict"
-  prefix = "mise exec npm:renovate -- "
+  prefix = "mise exec npm:renovate@\(renovate_version) -- "
 }
 
 // Validate YAML files against JSON schemas specified in comments at the top of the file,
@@ -187,9 +210,12 @@ renovate = new Config.Step {
 // (used for example by VS Code's YAML extension), while the "yaml-language-server: $schema=" format is only
 // supported by the YAML Language Server.
 //
+// renovate: datasource=pypi depName=check-jsonschema
+local check_jsonschema_version = "0.37.1"
+
 yaml_schema = new Config.Step {
   glob = List("**/*.yaml", "**/*.yml")
-  shell = "mise x pipx:check-jsonschema -- bash -o errexit -c"
+  shell = "mise x pipx:check-jsonschema@\(check_jsonschema_version) -- bash -o errexit -c"
   check =
     #"""
     failed=0
