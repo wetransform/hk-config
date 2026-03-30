@@ -1,3 +1,17 @@
+## [2.2.0](https://github.com/wetransform/hk-config/compare/v2.1.1...v2.2.0) (2026-03-30)
+
+### Features
+
+* add step for validating YAML files with schema ([961f751](https://github.com/wetransform/hk-config/commit/961f75198e3b5d6cd69322e3893e08c4fb0418a8))
+* manage versions for tools used in checks ([a6cf8bd](https://github.com/wetransform/hk-config/commit/a6cf8bd0d8ab2849324896d3335742ec9124dc96))
+
+### Bug Fixes
+
+* **deps:** update dependency gitleaks/gitleaks to v8.30.1 ([9df8581](https://github.com/wetransform/hk-config/commit/9df8581cc5847b3ee3a0bd0f2af72bd88491c768))
+* **deps:** update dependency renovate to v43.100.0 ([0b214dc](https://github.com/wetransform/hk-config/commit/0b214dcc129f7daffc7db895d89dda2656b9ec21))
+* **deps:** update hk to v1.39.0 ([282d660](https://github.com/wetransform/hk-config/commit/282d660c61590f17cee4d0211fd7d4f502b57369))
+* **deps:** update pkl to v0.31.1 ([41305b2](https://github.com/wetransform/hk-config/commit/41305b2d335fe85536e7ed7c1acb1129f9967c7f))
+
 ## [2.1.1](https://github.com/wetransform/hk-config/compare/v2.1.0...v2.1.1) (2026-03-19)
 
 ### Bug Fixes
