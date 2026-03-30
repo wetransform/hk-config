@@ -32,7 +32,7 @@ prettier = (Builtins.prettier) {
 }
 
 // renovate: datasource=github-tags depName=apple/pkl
-local pkl_version = "0.31.0"
+local pkl_version = "0.31.1"
 local pkl_prefix = "mise x pkl@\(pkl_version) --"
 
 pkl = (Builtins.pkl) {
