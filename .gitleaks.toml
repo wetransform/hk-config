@@ -1,0 +1,12 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Dummy secrets for tests"
+paths = [ '''Shared\.pkl$''']
+regexes = [
+  '''AKIAIOSFODNN7EXAMPZZ''',
+  '''-----BEGIN PRIVATE KEY-----.+'''
+]
+
+

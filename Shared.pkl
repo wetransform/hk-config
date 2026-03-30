@@ -90,6 +90,28 @@ detectsecrets = new Config.Step {
   check = "detect-secrets-hook --baseline .secrets.baseline {{files}}"
 
   prefix = "mise x pipx:detect-secrets@\(detect_secrets_version) --"
+  tests {
+    ["clean file with baseline passes"] {
+      run = "check"
+      tmpdir = true
+      write {
+        [".secrets.baseline"] =
+          "{\"version\": \"1.5.0\", \"plugins_used\": [], \"results\": {}, \"generated_at\": \"2024-01-01T00:00:00Z\"}"
+        ["clean.txt"] = "just some normal text\n"
+      }
+      expect { code = 0 }
+    }
+    ["detects secret in file"] {
+      run = "check"
+      tmpdir = true
+      write {
+        [".secrets.baseline"] =
+          "{\"version\": \"1.5.0\", \"plugins_used\": [{\"name\": \"AWSKeyDetector\"}], \"results\": {}, \"generated_at\": \"2024-01-01T00:00:00Z\"}"
+        ["secret.txt"] = "AKIAIOSFODNN7EXAMPLE\n"
+      }
+      expect { code = 1 }
+    }
+  }
 }
 
 // https://github.com/sirwart/ripsecrets
@@ -99,6 +121,24 @@ local ripsecrets_version = "0.1.11"
 ripsecrets = new Config.Step {
   check = "ripsecrets {{files}}"
   prefix = "mise x ripsecrets@\(ripsecrets_version) --"
+  tests {
+    ["clean file passes"] {
+      run = "check"
+      tmpdir = true
+      write {
+        ["clean.txt"] = "just some normal text\n"
+      }
+      expect { code = 0 }
+    }
+    ["detects secret in file"] {
+      run = "check"
+      tmpdir = true
+      write {
+        ["secret.txt"] = "aws_secret_access_key = \"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\n"
+      }
+      expect { code = 1 }
+    }
+  }
 }
 
 // don't use latest gitleaks version as there may be breaking changes (even for minor version updates)
@@ -162,6 +202,25 @@ local trufflehog_version = "3.94.1"
 trufflehog = new Config.Step {
   check = "trufflehog filesystem {{files}} --fail"
   prefix = "mise x trufflehog@\(trufflehog_version) --"
+  tests {
+    ["clean file passes"] {
+      run = "check"
+      tmpdir = true
+      write {
+        ["clean.txt"] = "just some normal text\n"
+      }
+      expect { code = 0 }
+    }
+    ["detects secret in file"] {
+      run = "check"
+      tmpdir = true
+      write {
+        ["secret.pem"] =
+          "-----BEGIN PRIVATE KEY-----\nMIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMTnQhpZcXab8qGc\nAw4UP24iQe9CcgHiMHZ5A6wybgsQrIkqn2rKQmyBmVLKcFaARQ2GcFUwoOr83tBE\n9gF574WIJlbo6PQbiQj7oCkbTvUFb+k4PY9tMi2Z15TBhZ1MO2C6ORFVeQTwklzk\nyshTNF4dAya5m3Wu00wBweJtFrNdAgMBAAECgYBAQaO9y5COf2fXu3z3vD3S6BUS\nSmHAIZtlHirHqBFnRQK5JJKvm9+/Xy+05+FvKR7fwg6ojl0FMo5X8xlA9BTosM2q\n2S74zBPYf+vEG2Dkb83uSkCoIJG97fyEdJ5qXAFDuPrtBTg4VigV0l9J+2KbXr8h\nRcT1PpVS+dlv41EQ9QJBAPGol612bxPqBmjvwHw8H1GwMfgkL43sS2CeFAjp+KoW\n0q9Ho/t9xA5wsG5t3L/fDiggUQz+1LqL9JNIeRhOPecCQQDQlrhpQh0YOkbKzP4Q\nTwiW+xjpFzQSVo1Apw7TdT50EC90KaAypUFPSrf736/fpW4CPQ0uChrrv9Lf+tIw\nuvQbAkEAke1jwmzNQLJGMqHsk1je9L44PobjbIlvLyXmJUfcUCG+Efhp7pkQhkPI\nVrbi4b55VwPEzdsobInNJA9UiLfeqwJAFgJBNQH/1eWYQJ++kvPz4RJff4CuQt0V\nDGRUISW20EJA743Q1Gcxa+9jWFUy1nM7F0tfz6LLUmKsGmv5r6CaTwJAXucuDvlZ\ngOSDXdoxgUPc0oB5U4kYbJnLaLv549ZrNHyeiPGpEnXiS7/6fxVE2XJ2T23JrUU5\nSDu9BoytLLaSTQ==\n-----END PRIVATE KEY-----\n"
+      }
+      expect { code = 1 }
+    }
+  }
 }
 
 // https://trivy.dev/docs/latest/scanner/secret/
@@ -172,6 +231,25 @@ trivysecrets = new Config.Step {
   // Note: trivy fs can only take one file/path as argument, so we can only scan the current directory and not pass the files
   check = "trivy fs --exit-code 1 --scanners secret ."
   prefix = "mise x trivy@\(trivy_version) --"
+  tests {
+    ["clean directory passes"] {
+      run = "check"
+      tmpdir = true
+      write {
+        ["clean.txt"] = "just some normal text\n"
+      }
+      expect { code = 0 }
+    }
+    ["detects secret in directory"] {
+      run = "check"
+      tmpdir = true
+      write {
+        // Note: AKIAIOSFODNN7EXAMPLE is on trivy's allowlist as a well-known example, so we use a slightly different key
+        ["secret.env"] = "AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPZZ\n"
+      }
+      expect { code = 1 }
+    }
+  }
 }
 
 // https://docs.renovatebot.com/config-validation/

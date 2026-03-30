@@ -1,0 +1,12 @@
+import "../Shared.pkl"
+import "./Default.pkl"
+
+// Note: This file is used to test all steps in one go, should not be used in other projects.
+
+steps = (Default.steps) {
+  ["detectsecrets"] = Shared.detectsecrets
+  ["ripsecrets"] = Shared.ripsecrets
+  // exclude trufflehog because there are inconsistent results testing locally and in CI
+  // ["trufflehog"] = Shared.trufflehog
+  ["trivysecrets"] = Shared.trivysecrets
+}

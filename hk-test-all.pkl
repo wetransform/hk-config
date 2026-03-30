@@ -1,0 +1,5 @@
+amends "./Config.pkl"
+import "./Functions.pkl"
+import "./steps/All.pkl" as Steps
+
+hooks = Functions.defaultHooks(true, Steps.steps)

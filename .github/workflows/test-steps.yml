@@ -23,11 +23,14 @@ jobs:
       - name: Run step tests
         shell: bash
         run: |
+          cp hk.pkl hk.pkl.bak
+          cp hk-test-all.pkl hk.pkl
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             # Steps to skip on Windows:
             # - prettier: upstream builtin uses {{tmp}}/ paths that break on Windows
             # - yaml-schema: currently unclear why this fails on Windows
-            skip_steps="prettier yaml-schema"
+            # - ripsecrets: no Windows binary available
+            skip_steps="prettier yaml-schema ripsecrets"
 
             pattern=$(echo "$skip_steps" | tr ' ' '\n' | sed 's/.*$/^&$/' | paste -sd'|')
             step_args=()
@@ -38,3 +41,4 @@ jobs:
           else
             hk test
           fi
+          mv hk.pkl.bak hk.pkl
