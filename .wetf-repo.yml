@@ -5,3 +5,9 @@
 presets:
   - renovate
   - repo-release
+
+# List of custom required checks
+required_checks:
+  - test-steps (ubuntu-latest)
+  - test-steps (macos-latest)
+  - test-steps (windows-latest)
