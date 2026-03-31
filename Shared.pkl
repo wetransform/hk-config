@@ -10,7 +10,7 @@ local not_ci_check_profile = "!\(ci_check_profile)"
 // common step definitions
 
 // renovate: datasource=github-tags depName=rhysd/actionlint
-local actionlint_version = "1.7.11"
+local actionlint_version = "1.7.12"
 // renovate: datasource=github-tags depName=koalaman/shellcheck
 local shellcheck_version = "0.11.0"
 
