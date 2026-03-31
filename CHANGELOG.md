@@ -1,3 +1,9 @@
+## [2.2.1](https://github.com/wetransform/hk-config/compare/v2.2.0...v2.2.1) (2026-03-31)
+
+### Bug Fixes
+
+* **deps:** update dependency rhysd/actionlint to v1.7.12 ([c6bb381](https://github.com/wetransform/hk-config/commit/c6bb381b6fc257538e5d27f0840c8eb37d082f2d))
+
 ## [2.2.0](https://github.com/wetransform/hk-config/compare/v2.1.1...v2.2.0) (2026-03-30)
 
 ### Features
