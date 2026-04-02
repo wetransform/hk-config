@@ -26,11 +26,18 @@ actionlint = (Builtins.actionlint) {
   exclude = List(".github/workflows/tf-*")
 }
 
+// renovate: datasource=node-version depName=node
+local node_version = "24.14.1"
+// renovate: datasource=pypi depName=uv
+local uv_version = "0.11.2"
+// renovate: datasource=python-version depName=python
+local python_version = "3.14.3"
+
 // renovate: datasource=npm depName=prettier
 local prettier_version = "3.8.1"
 
 prettier = (Builtins.prettier) {
-  prefix = "mise x prettier@\(prettier_version) --"
+  prefix = "mise x node@\(node_version) -- mise x prettier@\(prettier_version) --"
 
   // batching seems to cause problems in combination with using `mise x`
   batch = false
@@ -89,7 +96,8 @@ detectsecrets = new Config.Step {
   // check will fail if file does not exist
   check = "detect-secrets-hook --baseline .secrets.baseline {{files}}"
 
-  prefix = "mise x pipx:detect-secrets@\(detect_secrets_version) --"
+  prefix =
+    "mise x python@\(python_version) -- mise x uv@\(uv_version) -- mise x pipx:detect-secrets@\(detect_secrets_version) --"
   tests {
     ["clean file with baseline passes"] {
       run = "check"
@@ -272,7 +280,27 @@ renovate = new Config.Step {
   // Note: strict flag enables failing for migration warnings as well
   // specifying no file path runs for default config file paths (only one file is expected to be present)
   check = "renovate-config-validator --strict"
-  prefix = "mise exec npm:renovate@\(renovate_version) -- "
+  prefix = "mise x node@\(node_version) -- mise exec npm:renovate@\(renovate_version) -- "
+  tests {
+    ["passes valid renovate config"] {
+      run = "check"
+      tmpdir = true
+      write {
+        ["renovate.json"] =
+          #"{"$schema":"https://docs.renovatebot.com/renovate-schema.json","extends":["config:recommended"]}"#
+      }
+      expect { code = 0 }
+    }
+    ["fails invalid renovate config"] {
+      run = "check"
+      tmpdir = true
+      write {
+        ["renovate.json"] =
+          #"{"$schema":"https://docs.renovatebot.com/renovate-schema.json","extends":"config:base"}"#
+      }
+      expect { code = 1 }
+    }
+  }
 }
 
 // Validate YAML files against JSON schemas specified in comments at the top of the file,
@@ -293,7 +321,12 @@ local check_jsonschema_version = "0.37.1"
 
 yaml_schema = new Config.Step {
   glob = List("**/*.yaml", "**/*.yml")
-  shell = "mise x pipx:check-jsonschema@\(check_jsonschema_version) -- bash -o errexit -c"
+  shell = "bash -o errexit -c"
+  env {
+    ["CHECK_JSONSCHEMA_VERSION"] = check_jsonschema_version
+    ["PYTHON_VERSION"] = python_version
+    ["UV_VERSION"] = uv_version
+  }
   check =
     #"""
     failed=0
@@ -316,7 +349,7 @@ yaml_schema = new Config.Step {
         esac
 
         echo "Validating $f against $schema"
-        if ! check-jsonschema --schemafile "$schema" "$f"; then
+        if ! mise x "python@$PYTHON_VERSION" -- mise x "uv@$UV_VERSION" -- mise x "pipx:check-jsonschema@$CHECK_JSONSCHEMA_VERSION" -- check-jsonschema --schemafile "$schema" "$f"; then
             failed=1
         fi
     done
@@ -359,7 +392,7 @@ yaml_schema = new Config.Step {
           #"{"type":"object","required":["name"],"properties":{"name":{"type":"string"}}}"#
         ["invalid.yaml"] = "# $schema: schema.json\nother: value\n"
       }
-      expect { code = 1 }
+      expect { code = 1; stdout = "Validating" }
     }
     ["passes valid YAML with remote schema"] {
       run = "check"
@@ -377,7 +410,7 @@ yaml_schema = new Config.Step {
         ["compose.yaml"] =
           "# $schema: https://raw.githubusercontent.com/compose-spec/compose-go/master/schema/compose-spec.json\nservices: \"not-a-map\"\n"
       }
-      expect { code = 1 }
+      expect { code = 1; stdout = "Validating" }
     }
   }
 }
