@@ -361,5 +361,23 @@ yaml_schema = new Config.Step {
       }
       expect { code = 1 }
     }
+    ["passes valid YAML with remote schema"] {
+      run = "check"
+      tmpdir = true
+      write {
+        ["compose.yaml"] =
+          "# $schema: https://raw.githubusercontent.com/compose-spec/compose-go/master/schema/compose-spec.json\nservices:\n  web:\n    image: nginx\n"
+      }
+      expect { code = 0; stdout = "Validating" }
+    }
+    ["fails invalid YAML against remote schema"] {
+      run = "check"
+      tmpdir = true
+      write {
+        ["compose.yaml"] =
+          "# $schema: https://raw.githubusercontent.com/compose-spec/compose-go/master/schema/compose-spec.json\nservices: \"not-a-map\"\n"
+      }
+      expect { code = 1 }
+    }
   }
 }
