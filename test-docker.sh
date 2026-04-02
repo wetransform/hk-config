@@ -14,6 +14,8 @@ cat > /tmp/hk-docker-test.sh << 'TESTSCRIPT'
 #!/usr/bin/env bash
 set -euo pipefail
 apt-get update -qq && apt-get install -y -qq curl git
+cp -a /workspace-src /workspace
+cd /workspace
 curl https://mise.run | sh
 export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
 export MISE_YES=1
@@ -32,8 +34,7 @@ TESTSCRIPT
 chmod +x /tmp/hk-docker-test.sh
 
 docker run --rm \
-    -v "$REPO_ROOT:/workspace" \
+    -v "$REPO_ROOT:/workspace-src:ro" \
     -v "/tmp/hk-docker-test.sh:/hk-docker-test.sh" \
-    -w /workspace \
     debian:bookworm-slim \
     /hk-docker-test.sh
