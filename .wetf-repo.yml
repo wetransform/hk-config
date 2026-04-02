@@ -11,3 +11,4 @@ required_checks:
   - test-steps (ubuntu-latest)
   - test-steps (macos-latest)
   - test-steps (windows-latest)
+  - test-docker
