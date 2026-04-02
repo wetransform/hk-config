@@ -23,7 +23,7 @@ mise install
 cp hk.pkl hk.pkl.bak
 trap 'mv hk.pkl.bak hk.pkl; hk cache clear' EXIT
 cp hk-test-all.pkl hk.pkl
-skip_steps="prettier renovate detectsecrets"
+skip_steps="" # "prettier renovate detectsecrets"
 pattern=$(echo "$skip_steps" | tr ' ' '\n' | sed 's/.*$/^&$/' | paste -sd'|')
 step_args=()
 while IFS= read -r step; do
