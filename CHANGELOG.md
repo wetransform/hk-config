@@ -1,3 +1,13 @@
+## [2.2.2](https://github.com/wetransform/hk-config/compare/v2.2.1...v2.2.2) (2026-04-08)
+
+### Bug Fixes
+
+* **deps:** update dependency renovate to v43.109.3 ([28b28f6](https://github.com/wetransform/hk-config/commit/28b28f6f73a0fb03750f5f3c60ac373100cda10a))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.94.2 ([37b70ae](https://github.com/wetransform/hk-config/commit/37b70ae38adb1b92dd959ea15050e22c1d243045))
+* **deps:** update dependency uv to v0.11.4 ([1c312ee](https://github.com/wetransform/hk-config/commit/1c312ee9970a85b464058f86757d81cafba85e75))
+* **deps:** update hk to v1.41.0 ([d2abd84](https://github.com/wetransform/hk-config/commit/d2abd84837994ea74be520e9d9e35eca885b54ba))
+* ensure that required dependencies are present ([4c9bcda](https://github.com/wetransform/hk-config/commit/4c9bcdaf5b8ac5e3880f1b8665dc0c63acb57647))
+
 ## [2.2.1](https://github.com/wetransform/hk-config/compare/v2.2.0...v2.2.1) (2026-03-31)
 
 ### Bug Fixes
