@@ -262,7 +262,7 @@ trivysecrets = new Config.Step {
 
 // https://docs.renovatebot.com/config-validation/
 // renovate: datasource=npm depName=renovate
-local renovate_version = "43.110.16"
+local renovate_version = "43.129.0"
 
 renovate = new Config.Step {
   glob =
