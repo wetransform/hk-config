@@ -34,7 +34,7 @@ local uv_version = "0.11.6"
 local python_version = "3.14.4"
 
 // renovate: datasource=npm depName=prettier
-local prettier_version = "3.8.2"
+local prettier_version = "3.8.3"
 
 prettier = (Builtins.prettier) {
   prefix = "mise x node@\(node_version) -- mise x prettier@\(prettier_version) --"
