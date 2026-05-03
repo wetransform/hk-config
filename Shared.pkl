@@ -29,7 +29,7 @@ actionlint = (Builtins.actionlint) {
 // renovate: datasource=node-version depName=node
 local node_version = "24.15.0"
 // renovate: datasource=pypi depName=uv
-local uv_version = "0.11.7"
+local uv_version = "0.11.8"
 // renovate: datasource=python-version depName=python
 local python_version = "3.14.4"
 
