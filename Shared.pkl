@@ -317,7 +317,7 @@ renovate = new Config.Step {
 // supported by the YAML Language Server.
 //
 // renovate: datasource=pypi depName=check-jsonschema
-local check_jsonschema_version = "0.37.1"
+local check_jsonschema_version = "0.37.2"
 
 yaml_schema = new Config.Step {
   glob = List("**/*.yaml", "**/*.yml")
