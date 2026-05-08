@@ -1,3 +1,30 @@
+## [2.3.0](https://github.com/wetransform/hk-config/compare/v2.2.2...v2.3.0) (2026-05-08)
+
+### Features
+
+* add configurations for use with OpenTofu ([87aa6d7](https://github.com/wetransform/hk-config/commit/87aa6d774a719e1eb6135397b8f742fcecf622ae))
+
+### Bug Fixes
+
+* **deps:** update dependency check-jsonschema to v0.37.2 ([0d746a3](https://github.com/wetransform/hk-config/commit/0d746a34225a601686863a59197fe9125ef7004c))
+* **deps:** update dependency prettier to v3.8.2 ([6944307](https://github.com/wetransform/hk-config/commit/6944307e8521cb825a31e0ee7843a337dfddf7c2))
+* **deps:** update dependency prettier to v3.8.3 ([f6aa873](https://github.com/wetransform/hk-config/commit/f6aa87350e3732416e252d1e19b81cd1c5592082))
+* **deps:** update dependency python to v3.14.4 ([9b26802](https://github.com/wetransform/hk-config/commit/9b26802602bb05e76801cbb3a6cffae5101d072c))
+* **deps:** update dependency renovate to v43.110.16 ([5e44603](https://github.com/wetransform/hk-config/commit/5e4460399a940e747c73d98dcb7312afa1e6c3e7))
+* **deps:** update dependency renovate to v43.129.0 ([099e86b](https://github.com/wetransform/hk-config/commit/099e86bcb6bb7c3b598fbe4682e8edd30522c149))
+* **deps:** update dependency renovate to v43.150.0 ([8ec1b08](https://github.com/wetransform/hk-config/commit/8ec1b08542e5d369207cad03f1ed833a3984b147))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.94.3 ([5781528](https://github.com/wetransform/hk-config/commit/578152859b6d83a0914fbfe4caa822aa4c2de14b))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.95.2 ([7d21a8e](https://github.com/wetransform/hk-config/commit/7d21a8e3d6fb329eb6d631ccf2d1e2d75edf291c))
+* **deps:** update dependency uv to v0.11.11 ([6dc310a](https://github.com/wetransform/hk-config/commit/6dc310a9231682df369d79b203896a6a37adc647))
+* **deps:** update dependency uv to v0.11.6 ([d7884e4](https://github.com/wetransform/hk-config/commit/d7884e4229bbd62429bbca0971aa1e833d0bc5fc))
+* **deps:** update dependency uv to v0.11.7 ([22ff3a2](https://github.com/wetransform/hk-config/commit/22ff3a25bbca526146bf3188f93a8e0b8847158b))
+* **deps:** update dependency uv to v0.11.8 ([c914ac1](https://github.com/wetransform/hk-config/commit/c914ac14a72bbafc8c92aceb87cf5e6b07dc6e3e))
+* **deps:** update hk to v1.41.1 ([c82145e](https://github.com/wetransform/hk-config/commit/c82145e6406c9248d29ecff98157fc633480f62e))
+* **deps:** update hk to v1.43.0 ([40f6ffc](https://github.com/wetransform/hk-config/commit/40f6ffca303118a61e15205374a9780c536f45ec))
+* **deps:** update hk to v1.44.3 ([28dd01c](https://github.com/wetransform/hk-config/commit/28dd01cede716bdf600ff96d09ef487ad1894a15))
+* **deps:** update hk to v1.45.0 ([6e21546](https://github.com/wetransform/hk-config/commit/6e215468d4e1a137411d68d7e5e613530223ee1c))
+* **deps:** update node.js to v24.15.0 ([629682b](https://github.com/wetransform/hk-config/commit/629682b64f44336bce67f8113ed36263aa45d0c4))
+
 ## [2.2.2](https://github.com/wetransform/hk-config/compare/v2.2.1...v2.2.2) (2026-04-08)
 
 ### Bug Fixes
