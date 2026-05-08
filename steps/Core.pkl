@@ -1,0 +1,30 @@
+/*
+  Core configuration with tools that work for most repos.
+*/
+import "../Builtins.pkl"
+import "../Config.pkl"
+import "../Model.pkl"
+import "../Shared.pkl"
+
+steps = new Mapping<String, Model.Step> {
+  // use prettier, in this case mainly intended for config files like JSON, YAML, etc.
+  ["prettier"] = Shared.prettier
+
+  // pkl file linter
+  ["pkl"] = Shared.pkl
+  // and formatter
+  ["pklformat"] = Shared.pklformat
+
+  // actionlint for GitHub Actions workflow files
+  ["actionlint"] = Shared.actionlint
+
+  // include secret scanning by default
+  ["gitleaks"] = Shared.gitleaks
+  ["gitleaks_ci"] = Shared.gitleaks_ci
+
+  // renovate config validation
+  ["renovate"] = Shared.renovate
+
+  // yaml schema validation
+  ["yaml-schema"] = Shared.yaml_schema
+}
