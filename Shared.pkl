@@ -31,7 +31,7 @@ local node_version = "24.15.0"
 // renovate: datasource=pypi depName=uv
 local uv_version = "0.11.11"
 // renovate: datasource=python-version depName=python
-local python_version = "3.14.4"
+local python_version = "3.14.6"
 
 // renovate: datasource=npm depName=prettier
 local prettier_version = "3.8.3"
