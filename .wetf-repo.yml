@@ -3,8 +3,9 @@
 
 # Reference presets that should apply to this repository
 presets:
+  - mise
   - renovate
-  - repo-release
+  - workflows-default
 
 # List of custom required checks
 required_checks:
