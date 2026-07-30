@@ -1,0 +1,32 @@
+---
+#
+# PLEASE NOTE: Managed workflow - do not change manually
+#
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (optional, otherwise uses default branch)'
+        required: false
+        default: ''
+
+concurrency:
+  # only run one publishing at a time to avoid conflicts
+  group: publish-${{ github.ref }}
+
+jobs:
+  publish:
+    # Only on main repository (don't publish on forks)
+    if: github.repository_owner == 'wetransform'
+
+    uses: wetransform/gha-workflows/.github/workflows/mise-publish.yml@32aadc152107f12c1671d09290b06bdb88642d1c # v4.2.2
+    with:
+      default-branch: master
+    secrets: inherit
