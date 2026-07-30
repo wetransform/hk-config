@@ -1,0 +1,8 @@
+# Repository CI configuration for wetransform managed workflows.
+release:
+  # Files attached to the GitHub release by @semantic-release/github.
+  # Built during the release prepareCmd (mise task ci:set-version).
+  # The glob matches all four package files: the metadata (hk-config@<v>),
+  # its .sha256, the .zip, and the .zip.sha256.
+  assets:
+    - path: .out/hk-config@*/hk-config@*
