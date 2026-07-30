@@ -24,5 +24,5 @@ description = "Build the distributable Pkl package, stamped with the release ver
 run = "./scripts/ci-set-version.sh"
 
 [tasks."ci:publish"]
-description = "Build the Pkl package and upload it to the matching GitHub release (semver tag builds only)"
-run = "./scripts/publish-pkl-package.sh"
+description = "No-op: the Pkl package is attached to the release at creation time by mise-release (@semantic-release/github assets)"
+run = "echo 'ci:publish: nothing to publish (package is attached during release)'"
