@@ -2,6 +2,7 @@
   Default configuration but assumes OpenTofu is used instead of Terraform in case there are Terraform related files.
 */
 amends "../../Config.pkl"
+
 import "../../Functions.pkl"
 import "../../steps/Tofu.pkl" as Steps
 
