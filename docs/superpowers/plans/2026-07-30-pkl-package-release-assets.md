@@ -253,8 +253,14 @@ with:
 ```toml
 [tasks."ci:set-version"]
 description = "Build the distributable Pkl package, stamped with the release version (--version <v>)"
-run = "./scripts/ci-set-version.sh"
+usage = 'flag "--version <version>"'
+run = './scripts/ci-set-version.sh --version "{{option(name="version")}}"'
 ```
+
+The `--version` flag is declared explicitly in `usage` and forwarded via the
+`{{option}}` template, rather than relying on mise's implicit trailing-arg
+append. When the flag is absent (local run), the template renders an empty
+value (`--version ""`) and the script falls back to the snapshot build.
 
 - [ ] **Step 4: Syntax-check the script**
 
