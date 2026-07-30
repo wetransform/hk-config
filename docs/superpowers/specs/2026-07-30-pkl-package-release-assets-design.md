@@ -148,11 +148,15 @@ assets attached — so the change is safe to ship before the toggle is flipped.
 
 ## Risks / open items
 
-- **`gha-workflows` delivery.** That repo is not part of this checkout; the
-  template change ships as a separate PR against it. Both changes should land
-  close together, but the template change is backward compatible, and hk-config
-  can merge first (its `ci:set-version`/`.wetf-ci.yml` are inert until the
-  template reads them, and `v2.4.0` already works), so ordering is not fragile.
+- **`gha-workflows` delivery.** The change lives in a separate repo (checkout
+  at `../gha-workflows`) and ships as its own PR + release; consuming repos then
+  pick up the new `mise-release.yml` pin (via Renovate / managed-workflow
+  regeneration) before the behavior takes effect. The template change is
+  backward compatible and hk-config's `ci:set-version`/`.wetf-ci.yml` are inert
+  until the template reads them (and `v2.4.0` already works), so the two repos
+  need not land atomically — ordering is not fragile.
+- **Immutability enablement** is handled out-of-band (repo/org admin), not by
+  this plan.
 - **Immutable-release finalization on the plugin's PATCH.** GitHub's
   recommended flow is draft→attach→publish, which the plugin does; confirm on
   the first release that the `PATCH draft:false` finalizes immutability +
