@@ -6,15 +6,19 @@ set -euo pipefail
 # ci:publish), which sets PUBLISH_VERSION.
 #
 # The publish workflow also fires on branch pushes (with PUBLISH_VERSION=latest
-# or a branch name); this script only acts on real release builds, i.e. when
-# PUBLISH_VERSION is a semantic version coming from a pushed vX.Y.Z tag.
+# or a branch name); this script only acts on stable release builds, i.e. when
+# PUBLISH_VERSION is an exact X.Y.Z version coming from a pushed vX.Y.Z tag.
+# The regex is end-anchored so partial/garbage values (e.g. 2.4.0foo) and
+# branch names are rejected rather than triggering a spurious publish. If this
+# repo ever publishes prereleases (e.g. 2.4.0-rc.1), widen the pattern to allow
+# a -<prerelease> suffix instead of removing the anchor.
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
 VERSION="${PUBLISH_VERSION:-}"
-if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]]; then
-  echo "PUBLISH_VERSION='$VERSION' is not a release version; skipping package publish."
+if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "PUBLISH_VERSION='$VERSION' is not a stable release version; skipping package publish."
   exit 0
 fi
 
@@ -37,8 +41,10 @@ tag="v${VERSION}"
 
 # The tag push can trigger this workflow a few seconds before semantic-release
 # finishes creating the GitHub release; wait for it to appear.
+release_found=false
 for attempt in 1 2 3 4 5 6; do
   if gh release view "$tag" >/dev/null 2>&1; then
+    release_found=true
     break
   fi
   if [[ "$attempt" -lt 6 ]]; then
@@ -46,6 +52,11 @@ for attempt in 1 2 3 4 5 6; do
     sleep 10
   fi
 done
+
+if [[ "$release_found" != true ]]; then
+  echo "ERROR: release $tag did not appear after 6 attempts (~50s); aborting without uploading package assets." >&2
+  exit 1
+fi
 
 gh release upload "$tag" "${assets[@]}" --clobber
 echo "Uploaded Pkl package assets to release $tag."
