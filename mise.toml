@@ -1,7 +1,7 @@
 [tools]
 # for git hooks
 hk = "1.53.0"
-pkl = "0.31.1"
+pkl = "0.32.1"
 
 [env]
 # explicitly use pkl CLI instead of pklr library because the latter does not support all language features needed
