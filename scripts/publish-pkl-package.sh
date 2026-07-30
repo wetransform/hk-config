@@ -41,8 +41,10 @@ for attempt in 1 2 3 4 5 6; do
   if gh release view "$tag" >/dev/null 2>&1; then
     break
   fi
-  echo "Release $tag not present yet (attempt ${attempt}/6); waiting 10s..."
-  sleep 10
+  if [[ "$attempt" -lt 6 ]]; then
+    echo "Release $tag not present yet (attempt ${attempt}/6); waiting 10s..."
+    sleep 10
+  fi
 done
 
 gh release upload "$tag" "${assets[@]}" --clobber

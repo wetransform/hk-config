@@ -117,6 +117,8 @@ archive:
 amends "https://raw.githubusercontent.com/wetransform/hk-config/refs/heads/<branch>/configs/Default.pkl"
 ```
 
+To pin an older tag that predates package publishing, use `refs/tags/<tag>` in place of `refs/heads/<branch>`.
+
 #### Reusing shared linter configurations
 
 Example content of `hk.pkl` reusing shared linter configurations:
