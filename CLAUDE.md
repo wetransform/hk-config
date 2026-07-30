@@ -51,7 +51,7 @@ configs/Gradle.pkl                 ← Gradle variant (adds Spotless)
 Other repos import from this repo's GitHub releases:
 
 ```pkl
-amends "package://pkg.pkl-lang.org/github.com/wetransform-os/hk-config@2.2.0#/configs/Default.pkl"
+amends "package://github.com/wetransform/hk-config/releases/download/v2.4.0/hk-config@2.4.0#/configs/Default.pkl"
 ```
 
 ### Tool versions

@@ -95,22 +95,36 @@ Depending on your configuration it is important to also add the required tools (
 
 #### Using a pre-defined shared configuration
 
-Example content of `hk.pkl` using a shared configuration:
+Reference a released version as a Pkl package (recommended). Package archives
+are served from the GitHub release CDN, avoiding the rate limiting that applies
+to raw GitHub URLs:
 
 ```pkl
-amends "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/configs/Default.pkl"
+amends "package://github.com/wetransform/hk-config/releases/download/v<version>/hk-config@<version>#/configs/Default.pkl"
 ```
 
-Make sure to replace `<tag>` with the desired version tag, e.g. `v1.0.2`.
+Replace `<version>` with the desired release version, e.g. `2.4.0` (note: the
+`v` prefix appears in the path segment but not in the `hk-config@<version>`
+package coordinate). Package archives are attached to every release from the
+one that introduced packaging onward; earlier tags have no archive (use the
+raw-URL form below for those).
+
+To reference a **branch or specific commit** (for example, to test changes
+before a release), use a raw GitHub URL instead — branches have no package
+archive:
+
+```pkl
+amends "https://raw.githubusercontent.com/wetransform/hk-config/refs/heads/<branch>/configs/Default.pkl"
+```
 
 #### Reusing shared linter configurations
 
 Example content of `hk.pkl` reusing shared linter configurations:
 
 ```pkl
-amends "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Config.pkl"
-import "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Builtins.pkl"
-import "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Shared.pkl"
+amends "package://github.com/wetransform/hk-config/releases/download/v<version>/hk-config@<version>#/Config.pkl"
+import "package://github.com/wetransform/hk-config/releases/download/v<version>/hk-config@<version>#/Builtins.pkl"
+import "package://github.com/wetransform/hk-config/releases/download/v<version>/hk-config@<version>#/Shared.pkl"
 
 local linters = new Mapping<String, Step> {
   // use shared linters from Shared.pkl
@@ -143,10 +157,10 @@ hooks {
 You can also reuse the function that creates the hooks mapping to avoid boilerplate code:
 
 ```pkl
-amends "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Config.pkl"
-import "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Shared.pkl"
-import "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Model.pkl"
-import "https://raw.githubusercontent.com/wetransform/hk-config/refs/tags/<tag>/Functions.pkl"
+amends "package://github.com/wetransform/hk-config/releases/download/v<version>/hk-config@<version>#/Config.pkl"
+import "package://github.com/wetransform/hk-config/releases/download/v<version>/hk-config@<version>#/Shared.pkl"
+import "package://github.com/wetransform/hk-config/releases/download/v<version>/hk-config@<version>#/Model.pkl"
+import "package://github.com/wetransform/hk-config/releases/download/v<version>/hk-config@<version>#/Functions.pkl"
 
 local linters = new Mapping<String, Model.Step> {
   // use shared linters from Shared.pkl
@@ -157,3 +171,7 @@ local linters = new Mapping<String, Model.Step> {
 
 hooks = Functions.defaultHooks(true, linters)
 ```
+
+To pin a branch or commit instead of a release, use the
+`https://raw.githubusercontent.com/wetransform/hk-config/refs/heads/<branch>/…`
+form shown above.
