@@ -37,7 +37,11 @@ local python_version = "3.14.4"
 local prettier_version = "3.8.3"
 
 prettier = (Builtins.prettier) {
-  prefix = "mise x node@\(node_version) -- mise x prettier@\(prettier_version) --"
+  // Note: all tools must be listed in a *single* `mise x` invocation. Nesting
+  // (`mise x node -- mise x prettier --`) stopped working in mise ~2026.7.x:
+  // the inner invocation no longer inherits the outer's ad-hoc tools, so at
+  // runtime prettier's `node` shim resolves to "No version is set for shim: node".
+  prefix = "mise x node@\(node_version) prettier@\(prettier_version) --"
 
   // batching seems to cause problems in combination with using `mise x`
   batch = false
@@ -97,7 +101,7 @@ detectsecrets = new Config.Step {
   check = "detect-secrets-hook --baseline .secrets.baseline {{files}}"
 
   prefix =
-    "mise x python@\(python_version) -- mise x uv@\(uv_version) -- mise x pipx:detect-secrets@\(detect_secrets_version) --"
+    "mise x python@\(python_version) uv@\(uv_version) pipx:detect-secrets@\(detect_secrets_version) --"
   tests {
     ["clean file with baseline passes"] {
       run = "check"
@@ -280,7 +284,16 @@ renovate = new Config.Step {
   // Note: strict flag enables failing for migration warnings as well
   // specifying no file path runs for default config file paths (only one file is expected to be present)
   check = "renovate-config-validator --strict"
-  prefix = "mise x node@\(node_version) -- mise exec npm:renovate@\(renovate_version) -- "
+  // mise's npm backend (2026.7.x+) enforces a provenance trust policy that rejects
+  // installing renovate because its transitive dep @yarnpkg/libzip@3.2.2 lost the
+  // provenance attestation that 3.2.0 had. Updating renovate does not help (the same
+  // dep is pulled across versions); it's an upstream Yarn provenance gap we don't control.
+  // shell_out makes mise install via the npm CLI, which skips that check. Scoped here
+  // via env so we don't mutate global mise settings for the consumer.
+  env {
+    ["MISE_NPM_SHELL_OUT"] = "true"
+  }
+  prefix = "mise x node@\(node_version) npm:renovate@\(renovate_version) -- "
   tests {
     ["passes valid renovate config"] {
       run = "check"
@@ -349,7 +362,7 @@ yaml_schema = new Config.Step {
         esac
 
         echo "Validating $f against $schema"
-        if ! mise x "python@$PYTHON_VERSION" -- mise x "uv@$UV_VERSION" -- mise x "pipx:check-jsonschema@$CHECK_JSONSCHEMA_VERSION" -- check-jsonschema --schemafile "$schema" "$f"; then
+        if ! mise x "python@$PYTHON_VERSION" "uv@$UV_VERSION" "pipx:check-jsonschema@$CHECK_JSONSCHEMA_VERSION" -- check-jsonschema --schemafile "$schema" "$f"; then
             failed=1
         fi
     done
