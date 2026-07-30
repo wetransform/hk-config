@@ -20,7 +20,20 @@ actionlint = (Builtins.actionlint) {
 
   // also provide shellcheck as actionlint picks it up automatically if present
   // since it seems to be available on GitHub runners, we provide it in general for consistency
-  prefix = "mise x actionlint@\(actionlint_version) shellcheck@\(shellcheck_version) --"
+  //
+  // hk 1.53.0's builtin defines commands as structured argv, which can no longer be
+  // combined with `prefix`. Instead, prepend the `mise x` invocation to the inherited
+  // argv so we keep the builtin's own arguments.
+  check = (super.check) {
+    argv =
+      List(
+        "mise",
+        "x",
+        "actionlint@\(actionlint_version)",
+        "shellcheck@\(shellcheck_version)",
+        "--",
+      ) + super.argv
+  }
 
   // exclude managed tf- files which are generated
   exclude = List(".github/workflows/tf-*")
@@ -41,7 +54,14 @@ prettier = (Builtins.prettier) {
   // (`mise x node -- mise x prettier --`) stopped working in mise ~2026.7.x:
   // the inner invocation no longer inherits the outer's ad-hoc tools, so at
   // runtime prettier's `node` shim resolves to "No version is set for shim: node".
-  prefix = "mise x node@\(node_version) prettier@\(prettier_version) --"
+  //
+  // hk 1.53.0's builtin defines commands as structured argv, which can no longer be
+  // combined with `prefix`. Instead, prepend the `mise x` invocation to each inherited
+  // argv so we keep the builtin's own arguments.
+  local misePrefix = List("mise", "x", "node@\(node_version)", "prettier@\(prettier_version)", "--")
+  check = (super.check) { argv = misePrefix + super.argv }
+  check_list_files = (super.check_list_files) { argv = misePrefix + super.argv }
+  fix = (super.fix) { argv = misePrefix + super.argv }
 
   // batching seems to cause problems in combination with using `mise x`
   batch = false
