@@ -1,3 +1,20 @@
+## [2.3.1](https://github.com/wetransform/hk-config/compare/v2.3.0...v2.3.1) (2026-07-30)
+
+### Bug Fixes
+
+* **deps:** update dependency check-jsonschema to v0.37.4 ([999ca88](https://github.com/wetransform/hk-config/commit/999ca88599868a2617a95fe7a97169572f6f6683))
+* **deps:** update dependency prettier to v3.9.6 ([4497a59](https://github.com/wetransform/hk-config/commit/4497a59ba0f776b02c2650e51a7156451d3cddd4))
+* **deps:** update dependency python to v3.14.6 ([75ae3a5](https://github.com/wetransform/hk-config/commit/75ae3a59c82512444aca485417f39b1c634eedae))
+* **deps:** update dependency renovate to v44 ([ce8002d](https://github.com/wetransform/hk-config/commit/ce8002d62a36e9f62191e55b3f7124815c51ffba))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.96.0 ([74ab7fb](https://github.com/wetransform/hk-config/commit/74ab7fb5c6250d1ad25879d8f267a9d0ab6b22f9))
+* **deps:** update dependency uv to v0.12.0 ([e93b0d7](https://github.com/wetransform/hk-config/commit/e93b0d776e3e78fa58bc58b2f5800919f13725a9))
+* **deps:** update hk to v1.48.0 ([be31d24](https://github.com/wetransform/hk-config/commit/be31d24906bc7c79b0bc0eb4296adae74e4dce5e))
+* **deps:** update hk to v1.53.0 ([1b8bc8a](https://github.com/wetransform/hk-config/commit/1b8bc8a64efeb5005a61fdc94e62144cd3aeeb3e))
+* **deps:** update node.js to v24.18.1 ([8769ec1](https://github.com/wetransform/hk-config/commit/8769ec1dd77269b8669606499c057e08c4e64b4c))
+* **deps:** update pkl to v0.32.1 ([c6963d7](https://github.com/wetransform/hk-config/commit/c6963d77863aa27b03df76ed529a7175549b2233))
+* prepend mise x to argv instead of prefix for prettier/actionlint ([a7ea290](https://github.com/wetransform/hk-config/commit/a7ea2903ec2dc1ad1d526dfa04032bac090fe95f))
+* use single mise x invocation and bypass npm trust policy for renovate ([969eaa7](https://github.com/wetransform/hk-config/commit/969eaa7a1b6220c4e9c07486b21683819bf3612b))
+
 ## [2.3.0](https://github.com/wetransform/hk-config/compare/v2.2.2...v2.3.0) (2026-05-08)
 
 ### Features
