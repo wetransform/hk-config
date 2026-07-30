@@ -10,3 +10,19 @@ HK_PKL_BACKEND = "pkl"
 [hooks]
 enter = "mise x -- hk install --mise"
 postinstall = "mise x -- hk install --mise"
+
+[tasks."ci:check"]
+description = "Validate that the distributable Pkl package builds"
+run = "rm -rf .out && pkl project package"
+
+[tasks."ci:verify-release"]
+description = "Verify the package builds before a release is tagged"
+depends = ["ci:check"]
+
+[tasks."ci:set-version"]
+description = "No-op: package version is injected via the VERSION env var at build time"
+run = "echo 'ci:set-version: no-op (version comes from the VERSION env var)'"
+
+[tasks."ci:publish"]
+description = "Build the Pkl package and upload it to the matching GitHub release (semver tag builds only)"
+run = "./scripts/publish-pkl-package.sh"
