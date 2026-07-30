@@ -33,7 +33,17 @@ hk test -v "${step_args[@]}"
 TESTSCRIPT
 chmod +x /tmp/hk-docker-test.sh
 
+# Forward a GitHub token into the container so mise authenticates its tool
+# downloads against the GitHub API (5000 req/h) instead of the unauthenticated
+# limit (60 req/h), which back-to-back runs otherwise exhaust. Prefers an
+# explicit MISE_GITHUB_TOKEN, then GITHUB_TOKEN (set by CI), then the local gh
+# CLI. Optional: runs unauthenticated if no token is available.
+gh_token="${MISE_GITHUB_TOKEN:-${GITHUB_TOKEN:-$(gh auth token 2>/dev/null || true)}}"
+token_args=()
+[[ -n "$gh_token" ]] && token_args+=(-e "MISE_GITHUB_TOKEN=$gh_token")
+
 docker run --rm \
+    "${token_args[@]}" \
     -v "$REPO_ROOT:/workspace-src:ro" \
     -v "/tmp/hk-docker-test.sh:/hk-docker-test.sh" \
     debian:bookworm-slim \
