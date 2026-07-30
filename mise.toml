@@ -21,7 +21,8 @@ depends = ["ci:check"]
 
 [tasks."ci:set-version"]
 description = "Build the distributable Pkl package, stamped with the release version (--version <v>)"
-run = "./scripts/ci-set-version.sh"
+usage = 'flag "--version <version>"'
+run = './scripts/ci-set-version.sh --version "{{option(name="version")}}"'
 
 [tasks."ci:publish"]
 description = "No-op: the Pkl package is attached to the release at creation time by mise-release (@semantic-release/github assets)"
