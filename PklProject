@@ -1,0 +1,24 @@
+amends "pkl:Project"
+
+package {
+  name = "hk-config"
+  authors { "wetransform GmbH <113353961+wetransformer@users.noreply.github.com>" }
+  version = read?("env:VERSION")?.replaceFirst("\(name)@", "") ?? "0.0.1-SNAPSHOT"
+  baseUri = "package://github.com/wetransform/hk-config/releases/download/v\(version)/hk-config"
+  packageZipUrl = "https://github.com/wetransform/hk-config/releases/download/v\(version)/\(name)@\(version).zip"
+  sourceCode = "https://github.com/wetransform/hk-config"
+  license = "MIT"
+  description = "Shared hk (git hooks) configuration for wetransform repositories"
+  exclude {
+    // dot-prefixed files (.github, .idea, .wetf-*.yml, .gitleaks.toml, …) are
+    // excluded by pkl's defaults; these are the non-dot files to keep out.
+    "hk.pkl"
+    "hk-test-all.pkl"
+    "test*.sh"
+    "scripts/**"
+    "docs/**"
+    "mise.toml"
+    "*.md"
+    "LICENSE"
+  }
+}
