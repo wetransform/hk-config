@@ -20,8 +20,8 @@ description = "Verify the package builds before a release is tagged"
 depends = ["ci:check"]
 
 [tasks."ci:set-version"]
-description = "No-op: package version is injected via the VERSION env var at build time"
-run = "echo 'ci:set-version: no-op (version comes from the VERSION env var)'"
+description = "Build the distributable Pkl package, stamped with the release version (--version <v>)"
+run = "./scripts/ci-set-version.sh"
 
 [tasks."ci:publish"]
 description = "Build the Pkl package and upload it to the matching GitHub release (semver tag builds only)"
