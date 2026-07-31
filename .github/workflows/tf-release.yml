@@ -21,7 +21,7 @@ jobs:
     # Only on main repository (don't release on forks)
     if: github.repository_owner == 'wetransform'
 
-    uses: wetransform/gha-workflows/.github/workflows/mise-release.yml@feat/release-assets
+    uses: wetransform/gha-workflows/.github/workflows/mise-release.yml@2563735dba59f6c566472e5259c166c146c2cacf # v4.3.1
     with:
       dry-run: ${{ inputs.dryRun }}
     secrets: inherit
