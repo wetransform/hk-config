@@ -61,22 +61,31 @@ Create a `mise.toml` file in the root of your repository or extend the existing 
 You can do this using the following command:
 
 ```sh
-mise use hk pkl
+mise use --pin hk pkl
 ```
 
 The respective section in the `mise.toml` file should look like this:
 
 ```toml
 [tools]
-hk = "latest"
-pkl = "latest"
+hk = "<version>"
+pkl = "<version>"
 ```
 
-If experimental features are enabled in your mise setup, you can add a `postinstall` hook to automatically install the git hooks after running `mise install`:
+Currently the configuration requires to explicitly configure the `pkl` CLI to be used as backend, since the PKL support built into `hk` does not support all language features required for our configuration:
+
+```toml
+[env]
+# explicitly use pkl CLI instead of pklr library because the latter does not support all language features needed
+HK_PKL_BACKEND = "pkl"
+```
+
+If experimental features are enabled in your mise setup, you can add an `enter` and `postinstall` hook to automatically install the git hooks after running `mise install`:
 
 ```toml
 [hooks]
-postinstall = "hk install --mise"
+enter = "mise x -- hk install --mise"
+postinstall = "mise x -- hk install --mise"
 ```
 
 ### Setting up the hk configuration
