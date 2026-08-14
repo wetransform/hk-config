@@ -22,17 +22,20 @@ actionlint = (Builtins.actionlint) {
   // since it seems to be available on GitHub runners, we provide it in general for consistency
   //
   // hk 1.53.0's builtin defines commands as structured argv, which can no longer be
-  // combined with `prefix`. Instead, prepend the `mise x` invocation to the inherited
-  // argv so we keep the builtin's own arguments.
+  // combined with `prefix`. Since hk 1.55.0 the argv lives under `command` in the
+  // CommandSpec, so prepend the `mise x` invocation to the inherited `command.argv`
+  // so we keep the builtin's own arguments.
   check = (super.check) {
-    argv =
-      List(
-        "mise",
-        "x",
-        "actionlint@\(actionlint_version)",
-        "shellcheck@\(shellcheck_version)",
-        "--",
-      ) + super.argv
+    command {
+      argv =
+        List(
+          "mise",
+          "x",
+          "actionlint@\(actionlint_version)",
+          "shellcheck@\(shellcheck_version)",
+          "--",
+        ) + super.argv
+    }
   }
 
   // exclude managed tf- files which are generated
@@ -56,12 +59,13 @@ prettier = (Builtins.prettier) {
   // runtime prettier's `node` shim resolves to "No version is set for shim: node".
   //
   // hk 1.53.0's builtin defines commands as structured argv, which can no longer be
-  // combined with `prefix`. Instead, prepend the `mise x` invocation to each inherited
-  // argv so we keep the builtin's own arguments.
+  // combined with `prefix`. Since hk 1.55.0 the argv lives under `command` in the
+  // CommandSpec, so prepend the `mise x` invocation to each inherited `command.argv`
+  // so we keep the builtin's own arguments.
   local misePrefix = List("mise", "x", "node@\(node_version)", "prettier@\(prettier_version)", "--")
-  check = (super.check) { argv = misePrefix + super.argv }
-  check_list_files = (super.check_list_files) { argv = misePrefix + super.argv }
-  fix = (super.fix) { argv = misePrefix + super.argv }
+  check = (super.check) { command { argv = misePrefix + super.argv } }
+  check_list_files = (super.check_list_files) { command { argv = misePrefix + super.argv } }
+  fix = (super.fix) { command { argv = misePrefix + super.argv } }
 
   // batching seems to cause problems in combination with using `mise x`
   batch = false
