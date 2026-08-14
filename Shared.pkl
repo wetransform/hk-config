@@ -63,7 +63,7 @@ prettier = (Builtins.prettier) {
   batch = false
 
   // exclude files which are generated/managed
-  exclude = List(".github/workflows/tf-*", "CHANGELOG.md")
+  exclude = List(".github/workflows/tf-*", "CHANGELOG.md", "docs/superpowers/**.md")
 }
 
 // renovate: datasource=github-tags depName=apple/pkl
