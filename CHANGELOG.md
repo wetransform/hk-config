@@ -1,3 +1,21 @@
+## [2.6.0](https://github.com/wetransform/hk-config/compare/v2.5.0...v2.6.0) (2026-08-14)
+
+### Features
+
+* **prettier:** exclude superpowers docs since formatting may break intended indentation ([eb0025b](https://github.com/wetransform/hk-config/commit/eb0025b8080c817f1a0fa7de92cabc9506d8815e))
+
+### Bug Fixes
+
+* adapt prettier/actionlint steps to hk 1.55.0 CommandSpec ([612d3dc](https://github.com/wetransform/hk-config/commit/612d3dc16d57f5037035e0235ad64d8dc344c8eb))
+* **deps:** update dependency check-jsonschema to v0.38.0 ([164a1c2](https://github.com/wetransform/hk-config/commit/164a1c23e1a1718a47093663a420a34559faa5f3))
+* **deps:** update dependency python to v3.14.7 ([bc06c0f](https://github.com/wetransform/hk-config/commit/bc06c0f54b0a193598e81959e42ba31c46ea7a7d))
+* **deps:** update dependency renovate to v44.25.0 ([e6e4031](https://github.com/wetransform/hk-config/commit/e6e403149f4720361e39dbb403dc6d8807adb9bb))
+* **deps:** update dependency uv to v0.12.3 ([1813be2](https://github.com/wetransform/hk-config/commit/1813be23579befaf8bfd61227cf2046e08403a6b))
+* **deps:** update dependency uv to v0.12.4 ([6871461](https://github.com/wetransform/hk-config/commit/6871461bfaeaddd9b85d3519b22c85a6898508a9))
+* **deps:** update hk to v1.54.1 ([3690f70](https://github.com/wetransform/hk-config/commit/3690f709ef42d9741f8615a83417e983deffc497))
+* **deps:** update hk to v1.55.0 ([dd8f8dd](https://github.com/wetransform/hk-config/commit/dd8f8ddc7e1f3c887094749b87421b1f3758add0))
+* **deps:** update node.js to v24.19.0 ([b0461da](https://github.com/wetransform/hk-config/commit/b0461da8c0f6444c108cdc59f07b2e1ed66eec9c))
+
 ## [2.5.0](https://github.com/wetransform/hk-config/compare/v2.4.0...v2.5.0) (2026-07-30)
 
 ## [2.4.0](https://github.com/wetransform/hk-config/compare/v2.3.1...v2.4.0) (2026-07-30)
