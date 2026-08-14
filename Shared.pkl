@@ -21,22 +21,18 @@ actionlint = (Builtins.actionlint) {
   // also provide shellcheck as actionlint picks it up automatically if present
   // since it seems to be available on GitHub runners, we provide it in general for consistency
   //
-  // hk 1.53.0's builtin defines commands as structured argv, which can no longer be
-  // combined with `prefix`. Since hk 1.55.0 the argv lives under `command` in the
-  // CommandSpec, so prepend the `mise x` invocation to the inherited `command.argv`
-  // so we keep the builtin's own arguments.
-  check = (super.check) {
-    command {
-      argv =
-        List(
-          "mise",
-          "x",
-          "actionlint@\(actionlint_version)",
-          "shellcheck@\(shellcheck_version)",
-          "--",
-        ) + super.argv
-    }
-  }
+  // The builtin defines commands as structured argv. Since hk 1.55.0 such
+  // structured commands accept an argv-list `prefix` (jdx/hk#1175), which is
+  // prepended without invoking a shell, so we run through a single `mise x`
+  // invocation that also provides shellcheck.
+  prefix =
+    List(
+      "mise",
+      "x",
+      "actionlint@\(actionlint_version)",
+      "shellcheck@\(shellcheck_version)",
+      "--",
+    )
 
   // exclude managed tf- files which are generated
   exclude = List(".github/workflows/tf-*")
@@ -58,14 +54,10 @@ prettier = (Builtins.prettier) {
   // the inner invocation no longer inherits the outer's ad-hoc tools, so at
   // runtime prettier's `node` shim resolves to "No version is set for shim: node".
   //
-  // hk 1.53.0's builtin defines commands as structured argv, which can no longer be
-  // combined with `prefix`. Since hk 1.55.0 the argv lives under `command` in the
-  // CommandSpec, so prepend the `mise x` invocation to each inherited `command.argv`
-  // so we keep the builtin's own arguments.
-  local misePrefix = List("mise", "x", "node@\(node_version)", "prettier@\(prettier_version)", "--")
-  check = (super.check) { command { argv = misePrefix + super.argv } }
-  check_list_files = (super.check_list_files) { command { argv = misePrefix + super.argv } }
-  fix = (super.fix) { command { argv = misePrefix + super.argv } }
+  // The builtin defines commands as structured argv. Since hk 1.55.0 such
+  // structured commands accept an argv-list `prefix` (jdx/hk#1175), which is
+  // prepended without invoking a shell and applies to check/check_list_files/fix.
+  prefix = List("mise", "x", "node@\(node_version)", "prettier@\(prettier_version)", "--")
 
   // batching seems to cause problems in combination with using `mise x`
   batch = false
