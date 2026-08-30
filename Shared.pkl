@@ -225,7 +225,7 @@ gitleaks_ci = new Model.ExtendedStep {
 
 // https://github.com/trufflesecurity/trufflehog
 // renovate: datasource=github-tags depName=trufflesecurity/trufflehog
-local trufflehog_version = "3.97.0"
+local trufflehog_version = "3.97.1"
 
 trufflehog = new Config.Step {
   check = "trufflehog filesystem {{files}} --fail"
