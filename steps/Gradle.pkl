@@ -1,7 +1,10 @@
+import "../Model.pkl"
 import "../Shared.pkl"
 import "./Default.pkl"
 
-steps = (Default.steps) {
+// Note: composed with spread instead of amending `Default.steps` — see steps/Default.pkl
+steps = new Mapping<String, Model.Step> {
+  ...Default.steps
   // add Spotless code formatter
   ["spotlessGradle"] = Shared.spotlessGradle
 }

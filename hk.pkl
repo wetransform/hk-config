@@ -1,9 +1,14 @@
 amends "./Config.pkl"
 
 import "./Functions.pkl"
+import "./Model.pkl"
 import "./steps/Default.pkl" as Steps
 
-local steps = (Steps.steps) {
+// Note: deliberately not named `steps`: hk 2 has a top-level `steps` property
+// and its built-in evaluator (pklr) lets a `local steps` shadow it, which
+// silently empties all hooks.
+local allSteps = new Mapping<String, Model.Step> {
+  ...Steps.steps
   // in addition to the default steps, run hk test
   ["hktest"] = new Step {
     check = "hk test"
@@ -11,4 +16,4 @@ local steps = (Steps.steps) {
   }
 }
 
-hooks = Functions.defaultHooks(true, steps)
+hooks = Functions.defaultHooks(true, allSteps)
