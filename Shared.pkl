@@ -77,6 +77,19 @@ pkl = (Builtins.pkl) {
 // Note: supported since pkl 0.30 - https://pkl-lang.org/main/current/release-notes/0.30.html
 pklformat = (Builtins.pkl_format) {
   prefix = pkl_prefix
+
+  // The builtin wraps `pkl format --write` in a multi-line `sh -c` script to map the exit code 11 that
+  // older pkl versions returned after writing to 0. The pkl version pinned here exits 0 after writing
+  // (apple/pkl#1340), so the plain command suffices.
+  //
+  // This also avoids a multi-line command, which breaks on Windows with hk 2: the Pkl package embedded
+  // in hk's Windows binary has CRLF line endings and pklr keeps a leading line break after `"""`, so
+  // the string `prefix` ends up alone on the first line (`mise x pkl@... --` without a command).
+  shell = null
+  fix = new Config.CommandSpec {
+    command = "pkl format --write {{ files }}"
+    effect = "write"
+  }
 }
 
 function spotlessGradleStep(addArgsCheck: String, addArgsFix: String): Config.Step = new Config.Step {
