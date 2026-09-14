@@ -2,10 +2,16 @@
 # for git hooks
 hk = "2.0.0"
 pkl = "0.32.1"
+# for scripts/check-evaluator-parity.sh
+jq = "1.8.2"
 
 [hooks]
 enter = "mise x -- hk install --mise"
 postinstall = "mise x -- hk install --mise"
+
+[tasks."test:parity"]
+description = "Check that hk's built-in Pkl evaluator and the pkl CLI agree on the configured steps"
+run = "./scripts/check-evaluator-parity.sh"
 
 [tasks."ci:check"]
 description = "Validate that the distributable Pkl package builds"
