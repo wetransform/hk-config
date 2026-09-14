@@ -48,6 +48,9 @@ You can try to run `pkl` directly to see if the configuration is as expected:
 pkl eval hk.pkl
 ```
 
+If `pkl eval` shows the expected hooks but hk runs no steps, hk's built-in
+evaluator disagrees with the pkl CLI — see _Writing `hk.pkl` for hk 2_ below.
+
 If the configuration is not as expected it may be that the remote file is cached by `pkl`.
 It is unclear though how to clear the `pkl` cache in this case, solution is usually to change the URL (e.g. by using a different tag or commit hash).
 
@@ -72,13 +75,13 @@ hk = "<version>"
 pkl = "<version>"
 ```
 
-Currently the configuration requires to explicitly configure the `pkl` CLI to be used as backend, since the PKL support built into `hk` does not support all language features required for our configuration:
+hk **2.0.0 or newer** is required: the shared configuration relies on hk's
+built-in Pkl evaluator and is tested against it (see _Writing `hk.pkl` for hk 2_ below).
+Do **not** set `HK_PKL_BACKEND` — hk 2 rejects it. If you upgrade a repository
+from hk 1, delete that entry from the `[env]` section of `mise.toml`.
 
-```toml
-[env]
-# explicitly use pkl CLI instead of pklr library because the latter does not support all language features needed
-HK_PKL_BACKEND = "pkl"
-```
+The `pkl` CLI is still useful for debugging (`pkl eval hk.pkl`) and is used by
+the `pkl` and `pklformat` steps, so keep it in `mise.toml`.
 
 If experimental features are enabled in your mise setup, you can add an `enter` and `postinstall` hook to automatically install the git hooks after running `mise install`:
 
@@ -102,6 +105,27 @@ For the last option please refer to the [hk documentation](https://hk.jdx.dev/).
 
 Depending on your configuration it is important to also add the required tools (e.g. `actionlint`, `prettier`, etc.) to your `mise.toml` file.
 
+#### Writing `hk.pkl` for hk 2
+
+hk 2 evaluates `hk.pkl` with its built-in evaluator (pklr), which currently
+mis-evaluates a few valid Pkl constructs **without reporting an error** — the
+affected hooks simply run no steps. Avoid these in your own `hk.pkl`:
+
+- Do not name a local property `steps` (`local steps = ...`). hk 2 has a
+  top-level `steps` property and the local shadows it; use another name such
+  as `local mySteps`.
+- Do not amend an imported mapping to add entries, e.g.
+  `(Steps.steps) { ["mine"] = Shared.prettier }`. It breaks when the imported
+  mapping is itself an amendment of another one (as the shared step mappings
+  are), so always build a new mapping with spread instead:
+  `new Mapping<String, Model.Step> { ...Steps.steps; ["mine"] = Shared.prettier }`.
+- Do not filter steps with `is` type tests; use the provided
+  `Functions.defaultHooks` (which is written to work around this).
+
+To check a configuration, compare `pkl eval -f json hk.pkl` with
+`hk run check --all --plan --json -n -q </dev/null`: the step names must match.
+This repository runs that comparison in CI (`mise run test:parity`).
+
 #### Using a pre-defined shared configuration
 
 Reference a released version as a Pkl package (recommended). Package archives
@@ -112,7 +136,7 @@ to raw GitHub URLs:
 amends "package://github.com/wetransform/hk-config/releases/download/v<version>/hk-config@<version>#/configs/Default.pkl"
 ```
 
-Replace `<version>` with the desired release version, e.g. `2.4.0` (note: the
+Replace `<version>` with the desired release version, e.g. `3.0.0` (note: the
 `v` prefix appears in the path segment but not in the `hk-config@<version>`
 package coordinate). Package archives are attached to every release from the
 one that introduced packaging onward; earlier tags have no archive (use the
