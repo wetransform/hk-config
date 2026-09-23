@@ -1,6 +1,6 @@
 [tools]
 # for git hooks
-hk = "1.58.1"
+hk = "2.0.1"
 pkl = "0.32.1"
 
 [env]
