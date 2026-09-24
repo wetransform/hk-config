@@ -2,9 +2,14 @@
   Default configuration with tools that work for most repos.
 */
 import "../Builtins.pkl"
+import "../Model.pkl"
 import "./Core.pkl"
 
-steps = (Core.steps) {
+// Note: composed with spread instead of amending `Core.steps` — hk's built-in
+// evaluator (pklr) fails on amending an imported mapping while adding entries
+// that reference another imported module.
+steps = new Mapping<String, Model.Step> {
+  ...Core.steps
   // terraform formatting - assumes correct terraform is available, e.g. via mise or similar
   ["terraform"] = Builtins.terraform
 }

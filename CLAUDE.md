@@ -14,13 +14,14 @@ Tools are managed via [mise](https://mise.jdx.dev). Install them with:
 hk install --mise
 ```
 
-| Task                        | Command           |
-| --------------------------- | ----------------- |
-| Run all checks on all files | `hk check --all`  |
-| Run all auto-fixes          | `hk fix --all`    |
-| Run tests                   | `./test.sh`       |
-| Evaluate Pkl config         | `pkl eval hk.pkl` |
-| Clear hk cache              | `hk cache clear`  |
+| Task                        | Command                |
+| --------------------------- | ---------------------- |
+| Run all checks on all files | `hk check --all`       |
+| Run all auto-fixes          | `hk fix --all`         |
+| Run tests                   | `./test.sh`            |
+| Check evaluator parity      | `mise run test:parity` |
+| Evaluate Pkl config         | `pkl eval hk.pkl`      |
+| Clear hk cache              | `hk cache clear`       |
 
 ## Architecture
 
@@ -35,7 +36,7 @@ configs/autofix/Default.pkl        ← same, with autofix enabled
 configs/Gradle.pkl                 ← Gradle variant (adds Spotless)
     └── steps/Default.pkl          ← step definitions (what tools to run)
         └── Shared.pkl             ← central step library (tool versions + config)
-            └── Config.pkl         ← base hk config (extends remote hk v1.39.0 package)
+            └── Config.pkl         ← base hk config (amends the remote hk package; version pinned here and in Builtins.pkl)
 ```
 
 **Key files:**
@@ -56,10 +57,21 @@ amends "package://github.com/wetransform/hk-config/releases/download/v2.4.0/hk-c
 
 ### Tool versions
 
-All tool versions are pinned in `Shared.pkl` as module-level properties and updated automatically by Renovate. The `mise.toml` pins hk and pkl versions for this repo's own development.
+All tool versions are pinned in `Shared.pkl` as module-level properties and updated automatically by Renovate. The `mise.toml` pins hk and pkl versions for this repo's own development. hk itself is pinned in `Config.pkl`, `Builtins.pkl` and `mise.toml` (all updated together by Renovate's "hk" group).
+
+### Pkl constraints (hk 2 / pklr)
+
+hk 2 evaluates configuration with its built-in evaluator, which mis-evaluates
+some valid Pkl silently. Never use: `x is SomeClass`; amending an imported
+mapping while adding entries that reference another module; a `local steps`
+in a module amending `Config.pkl`; `hasProperty`/`getPropertyOrNull`/
+`Map.getOrNull`. Use `Dynamic` normalisation and spread (`...X.steps`)
+instead, and run `mise run test:parity` after every Pkl change. Details:
+`docs/superpowers/specs/2026-09-14-hk-v2-migration-design.md`.
 
 ### CI
 
 - `test-steps.yml` — Runs all steps on Ubuntu, macOS, and Windows
 - `tf-check-hooks.yml` — Runs hook checks on PRs
 - Secret scanning runs on every push via `tf-scan-for-secrets.yml`
+- `test-steps.yml` also runs the `evaluator-parity` job (required check)

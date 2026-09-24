@@ -1,9 +1,12 @@
+import "../Model.pkl"
 import "../Shared.pkl"
 import "./Default.pkl"
 
 // Note: This file is used to test all steps in one go, should not be used in other projects.
+// Composed with spread instead of amending `Default.steps` — see steps/Default.pkl
 
-steps = (Default.steps) {
+steps = new Mapping<String, Model.Step> {
+  ...Default.steps
   ["detectsecrets"] = Shared.detectsecrets
   ["ripsecrets"] = Shared.ripsecrets
   // exclude trufflehog because there are inconsistent results testing locally and in CI

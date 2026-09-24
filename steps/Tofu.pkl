@@ -2,9 +2,12 @@
   Default configuration but assumes OpenTofu is used instead of Terraform in case there are Terraform related files.
 */
 import "../Builtins.pkl"
+import "../Model.pkl"
 import "./Core.pkl"
 
-steps = (Core.steps) {
+// Note: composed with spread instead of amending `Core.steps` — see steps/Default.pkl
+steps = new Mapping<String, Model.Step> {
+  ...Core.steps
   // tofu formatting - assumes correct tofu is available, e.g. via mise or similar
   ["tofu"] = Builtins.tofu
 }
