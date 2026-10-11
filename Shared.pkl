@@ -46,7 +46,7 @@ local uv_version = "0.13.0"
 local python_version = "3.14.8"
 
 // renovate: datasource=npm depName=prettier
-local prettier_version = "3.9.8"
+local prettier_version = "3.9.10"
 
 prettier = (Builtins.prettier) {
   // Note: all tools must be listed in a *single* `mise x` invocation. Nesting
