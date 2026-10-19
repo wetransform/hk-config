@@ -207,7 +207,11 @@ gitleaks_git = new Config.Step {
 gitleaks = new Model.ExtendedStep {
   step = new Config.Step {
     profiles = List(not_ci_check_profile)
-    check = "gitleaks git -v"
+    // scan local branches and HEAD only: by default gitleaks runs `git log --all`, which also covers
+    // fetched remote branches, so a finding on someone else's unmerged branch (allowlisted only there)
+    // would block local hooks; every branch is still scanned with full history in its own CI run.
+    // HEAD keeps commits made on a detached HEAD covered (e.g. `git push origin HEAD:feature`)
+    check = "gitleaks git -v --log-opts='--branches HEAD'"
     prefix = gitleaks_prefix
   }
   disable_pre_commit = true
