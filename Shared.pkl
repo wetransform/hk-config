@@ -197,8 +197,8 @@ gitleaks_workaround = new Config.Step {
 // companion for above step using workaround to run complete check in CI
 gitleaks_git = new Config.Step {
   profiles = List(ci_check_profile)
-  // perform a check based on git, also taking history into account
-  check = "gitleaks git -v --redact"
+  // perform a check based on git, also taking history into account (only HEAD, see gitleaks_ci)
+  check = "gitleaks git -v --redact --log-opts=HEAD"
   prefix = gitleaks_prefix
 }
 
@@ -221,7 +221,10 @@ gitleaks = new Model.ExtendedStep {
 gitleaks_ci = new Model.ExtendedStep {
   step = new Config.Step {
     profiles = List(ci_check_profile)
-    check = "gitleaks git -v --redact"
+    // scan only the checked-out history: CI checkouts may contain all branches (e.g. actions/checkout
+    // with fetch-depth: 0), and `git log --all` would fail every PR for a finding on an unrelated
+    // branch; HEAD (on a PR the merge commit) still covers the full history being merged
+    check = "gitleaks git -v --redact --log-opts=HEAD"
     prefix = gitleaks_prefix
   }
   disable_pre_commit = true
