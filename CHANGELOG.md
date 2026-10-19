@@ -1,3 +1,32 @@
+## [2.6.1](https://github.com/wetransform/hk-config/compare/v2.6.0...v2.6.1) (2026-10-19)
+
+### Bug Fixes
+
+* **deps:** update dependency check-jsonschema to v0.38.2 ([ce336bb](https://github.com/wetransform/hk-config/commit/ce336bb12d4e899cc5c31de01878cc423a8718c7))
+* **deps:** update dependency prettier to v3.9.10 ([a88fbcd](https://github.com/wetransform/hk-config/commit/a88fbcd1dbbf10d40e1f66a4bd7098ece5e31623))
+* **deps:** update dependency prettier to v3.9.8 ([a784425](https://github.com/wetransform/hk-config/commit/a78442546a9d5fc1192d88557cbd57c10221c5d0))
+* **deps:** update dependency python to v3.14.8 ([bbe979e](https://github.com/wetransform/hk-config/commit/bbe979eeef3f0056f5fad051da385a9a0bb7baeb))
+* **deps:** update dependency renovate to v44.103.6 ([d408d07](https://github.com/wetransform/hk-config/commit/d408d07946430b1df9b987f0eb4017af7f5ade76))
+* **deps:** update dependency renovate to v44.149.3 ([80439a5](https://github.com/wetransform/hk-config/commit/80439a5217a3a4fe7e0839cb7723a7d73a291a41))
+* **deps:** update dependency renovate to v44.166.0 ([47be89c](https://github.com/wetransform/hk-config/commit/47be89c1de600f747b0ffed578a37b5aa941144f))
+* **deps:** update dependency renovate to v44.30.3 ([c3b61a4](https://github.com/wetransform/hk-config/commit/c3b61a467723d0ab23885002b4d2b8e207cef9ef))
+* **deps:** update dependency renovate to v44.39.2 ([e34d7f5](https://github.com/wetransform/hk-config/commit/e34d7f5998983ceb57e9144a39a23b6d4c04c029))
+* **deps:** update dependency renovate to v44.65.5 ([2372848](https://github.com/wetransform/hk-config/commit/2372848c4f668a36e1e2b857dc1ebce94976ff17))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.97.0 ([54f1cbd](https://github.com/wetransform/hk-config/commit/54f1cbde89ef47743f9f531c01f22dae4cf3374e))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.97.4 ([2cf7b8a](https://github.com/wetransform/hk-config/commit/2cf7b8af65a94627fbe824f8e0e8b400929fe460))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.97.5 ([aa18bf0](https://github.com/wetransform/hk-config/commit/aa18bf0f891d2656ad8d7ddfbb9dd8fdcc1c1895))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.99.2 ([40bafe5](https://github.com/wetransform/hk-config/commit/40bafe57ed174e209a52a3cbb435031f178a3a55))
+* **deps:** update dependency uv to v0.12.10 ([f213361](https://github.com/wetransform/hk-config/commit/f213361799ea8b055516f0cce0d1a0d541575d1e))
+* **deps:** update dependency uv to v0.12.17 ([232dd7f](https://github.com/wetransform/hk-config/commit/232dd7fc5e3e9e6630d407859af3406a373d560f))
+* **deps:** update dependency uv to v0.12.5 ([fc595d3](https://github.com/wetransform/hk-config/commit/fc595d31ca967dcb00a18225a5ea9026e2a29916))
+* **deps:** update dependency uv to v0.13.0 ([4907ec2](https://github.com/wetransform/hk-config/commit/4907ec2431a69be94072f19dac1d0f8d0ac7ddbe))
+* **deps:** update hk to v1.56.1 ([a2a49d9](https://github.com/wetransform/hk-config/commit/a2a49d9cbf42e573f50cf582c4a436dc0958ef7e))
+* **deps:** update hk to v1.58.1 ([e68ad1a](https://github.com/wetransform/hk-config/commit/e68ad1af12aa93fa0bdd2f7d1abf0f47fcba653a))
+* **deps:** update node.js to v24.20.0 ([b8d93db](https://github.com/wetransform/hk-config/commit/b8d93dbec891117cf8e0d737d812bbae40e9e1b3))
+* **deps:** update node.js to v24.21.0 ([9febd27](https://github.com/wetransform/hk-config/commit/9febd27f56ecee28bd7a122f5974cfd3d36f1d90))
+* scan only local branches in the local gitleaks step ([7d68936](https://github.com/wetransform/hk-config/commit/7d68936565ce27792124dec345e873d39c35365f))
+* scan only the checked-out history in the CI gitleaks step ([c1ae8ca](https://github.com/wetransform/hk-config/commit/c1ae8ca5abe42196e076eaf9f5a8e3dff94af24c))
+
 ## [2.6.0](https://github.com/wetransform/hk-config/compare/v2.5.0...v2.6.0) (2026-08-14)
 
 ### Features
