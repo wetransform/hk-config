@@ -11,5 +11,5 @@ on:
 
 jobs:
   check:
-    uses: wetransform/gha-workflows/.github/workflows/mise-check.yml@835bff77f691fa8307f03ab6d1b79f6f478bd0a5 # v4.7.2
+    uses: wetransform/gha-workflows/.github/workflows/mise-check.yml@abcd91d90282cfe0f35cf46fce67818a6a5e513b # v4.8.0
     secrets: inherit
