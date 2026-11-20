@@ -44,7 +44,7 @@ local node_version = "24.22.3"
 // suitable system Python or downloads a managed one itself, so we deliberately do
 // not add `python@...` to `mise x` (installing it via mise fails in some environments).
 // renovate: datasource=pypi depName=uv
-local uv_version = "0.13.8"
+local uv_version = "0.13.9"
 
 // renovate: datasource=npm depName=prettier
 local prettier_version = "3.10.1"
