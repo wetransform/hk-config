@@ -40,10 +40,11 @@ actionlint = (Builtins.actionlint) {
 
 // renovate: datasource=node-version depName=node
 local node_version = "24.22.3"
+// Python tools are installed via mise's `pipx:` backend, which uses uv. uv uses a
+// suitable system Python or downloads a managed one itself, so we deliberately do
+// not add `python@...` to `mise x` (installing it via mise fails in some environments).
 // renovate: datasource=pypi depName=uv
 local uv_version = "0.13.8"
-// renovate: datasource=python-version depName=python
-local python_version = "3.15.2"
 
 // renovate: datasource=npm depName=prettier
 local prettier_version = "3.10.1"
@@ -116,8 +117,7 @@ detectsecrets = new Config.Step {
   // check will fail if file does not exist
   check = "detect-secrets-hook --baseline .secrets.baseline {{files}}"
 
-  prefix =
-    "mise x python@\(python_version) uv@\(uv_version) pipx:detect-secrets@\(detect_secrets_version) --"
+  prefix = "mise x uv@\(uv_version) pipx:detect-secrets@\(detect_secrets_version) --"
   tests {
     ["clean file with baseline passes"] {
       run = "check"
@@ -360,7 +360,6 @@ yaml_schema = new Config.Step {
   shell = "bash -o errexit -c"
   env {
     ["CHECK_JSONSCHEMA_VERSION"] = check_jsonschema_version
-    ["PYTHON_VERSION"] = python_version
     ["UV_VERSION"] = uv_version
   }
   check =
@@ -385,7 +384,7 @@ yaml_schema = new Config.Step {
         esac
 
         echo "Validating $f against $schema"
-        if ! mise x "python@$PYTHON_VERSION" "uv@$UV_VERSION" "pipx:check-jsonschema@$CHECK_JSONSCHEMA_VERSION" -- check-jsonschema --schemafile "$schema" "$f"; then
+        if ! mise x "uv@$UV_VERSION" "pipx:check-jsonschema@$CHECK_JSONSCHEMA_VERSION" -- check-jsonschema --schemafile "$schema" "$f"; then
             failed=1
         fi
     done
