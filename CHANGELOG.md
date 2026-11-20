@@ -1,3 +1,38 @@
+## [3.0.0](https://github.com/wetransform/hk-config/compare/v2.6.1...v3.0.0) (2026-11-20)
+
+### ⚠ BREAKING CHANGES
+
+* hk-config now requires hk >= 2.13.0. Consumers must
+remove HK_PKL_BACKEND from their environment / mise.toml.
+
+### Features
+
+* migrate to hk 2 ([82907f4](https://github.com/wetransform/hk-config/commit/82907f42cc60498c8984cc5d7224d5d0be97c375))
+
+### Bug Fixes
+
+* **deps:** update dependency check-jsonschema to v0.39.0 ([4c892e8](https://github.com/wetransform/hk-config/commit/4c892e8d0cc483e2d69fac8558f69a84c4c8e9ef))
+* **deps:** update dependency prettier to v3.10.1 ([541105c](https://github.com/wetransform/hk-config/commit/541105cedec5d6f62bdb0dd66da5fc582030bd33))
+* **deps:** update dependency python to v3.15.1 ([7bea700](https://github.com/wetransform/hk-config/commit/7bea70083a15117f6c7f7ac740d9ab30eb6b6b86))
+* **deps:** update dependency python to v3.15.2 ([f61ab04](https://github.com/wetransform/hk-config/commit/f61ab0488411dfd6212fdd488df9d2f11365a79e))
+* **deps:** update dependency renovate to v44.181.5 ([5c3f1e0](https://github.com/wetransform/hk-config/commit/5c3f1e059c33981c4a2e6e0fb432a6c9c3d7dcd2))
+* **deps:** update dependency renovate to v44.222.3 ([3f1e9c8](https://github.com/wetransform/hk-config/commit/3f1e9c8c31caa86861f196fab46b4fe6376e6a64))
+* **deps:** update dependency renovate to v44.239.1 ([0cd6dc9](https://github.com/wetransform/hk-config/commit/0cd6dc9b34615da0208afa5b6ece1082d0012ad2))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.100.0 ([9391011](https://github.com/wetransform/hk-config/commit/939101109e61fae74876ddac0f9db1ed7b3678b0))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.99.7 ([ac370ad](https://github.com/wetransform/hk-config/commit/ac370adc2ab1d077a64ed23d3e293d4865b50e87))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.99.8 ([ed8e4a9](https://github.com/wetransform/hk-config/commit/ed8e4a947e6816c3204f603a6d3dc1e41dcdf011))
+* **deps:** update dependency trufflesecurity/trufflehog to v3.99.9 ([22b980b](https://github.com/wetransform/hk-config/commit/22b980b2496a486d2fc99c4434703358fda7cc54))
+* **deps:** update dependency uv to v0.13.5 ([595d1f2](https://github.com/wetransform/hk-config/commit/595d1f26ec2519d2759bc78aa6749849e5e09045))
+* **deps:** update dependency uv to v0.13.7 ([b3af60d](https://github.com/wetransform/hk-config/commit/b3af60de0cba932b576d3048eff1c07d3aea2234))
+* **deps:** update dependency uv to v0.13.8 ([6d431ad](https://github.com/wetransform/hk-config/commit/6d431adebe01a8394e879f3d7acba8f59b4b755b))
+* **deps:** update dependency uv to v0.13.9 ([4b69766](https://github.com/wetransform/hk-config/commit/4b69766bd4ab1b2080c3632e04f033518518039b))
+* **deps:** update node.js to v24.22.1 ([dfca0c2](https://github.com/wetransform/hk-config/commit/dfca0c2d29072f6dbbb81dd839ce8aefb546c9cd))
+* **deps:** update node.js to v24.22.3 ([5b08b5e](https://github.com/wetransform/hk-config/commit/5b08b5e1f9bdd4ea60d7f6b5e69b6b615a965cd8))
+* **deps:** update pkl to v0.32.2 ([129be65](https://github.com/wetransform/hk-config/commit/129be6534c8cf9ee253e2d53801070e7f035ef67))
+* **deps:** update pkl to v0.33.0 ([fa19db2](https://github.com/wetransform/hk-config/commit/fa19db2f2d637f7b2b40b4b73f2ca3d1fb59322d))
+* **deps:** update pkl to v0.33.1 ([825a900](https://github.com/wetransform/hk-config/commit/825a9007bd9c4465f97c60c60673e05a4f5e6a34))
+* install python tools via uv without mise-managed python ([c485087](https://github.com/wetransform/hk-config/commit/c4850876ddf12bc733a09fa4f362f8e2fb4211b8))
+
 ## [2.6.1](https://github.com/wetransform/hk-config/compare/v2.6.0...v2.6.1) (2026-10-19)
 
 ### Bug Fixes
