@@ -39,7 +39,7 @@ actionlint = (Builtins.actionlint) {
 }
 
 // renovate: datasource=node-version depName=node
-local node_version = "24.22.3"
+local node_version = "26.13.1"
 // Python tools are installed via mise's `pipx:` backend, which uses uv. uv uses a
 // suitable system Python or downloads a managed one itself, so we deliberately do
 // not add `python@...` to `mise x` (installing it via mise fails in some environments).
