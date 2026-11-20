@@ -13,3 +13,4 @@ required_checks:
   - test-steps (macos-latest)
   - test-steps (windows-latest)
   - test-docker
+  - evaluator-parity
