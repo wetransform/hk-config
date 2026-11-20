@@ -1,7 +1,7 @@
 [tools]
 # for git hooks
 hk = "2.13.0"
-pkl = "0.33.0"
+pkl = "0.33.1"
 # for scripts/check-evaluator-parity.sh
 jq = "1.8.2"
 # for the terraform step tests (the step expects terraform to be provided by the project)
