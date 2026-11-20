@@ -48,6 +48,12 @@ You can try to run `pkl` directly to see if the configuration is as expected:
 pkl eval hk.pkl
 ```
 
+If `pkl eval` shows the expected hooks but hk runs different steps, hk's
+built-in evaluator disagrees with the pkl CLI. Compare the step names from
+`pkl eval -f json hk.pkl` with those from
+`hk run check --all --plan --json -n -q </dev/null`; this repository runs that
+comparison in CI (`mise run test:parity`). Please report such differences.
+
 If the configuration is not as expected it may be that the remote file is cached by `pkl`.
 It is unclear though how to clear the `pkl` cache in this case, solution is usually to change the URL (e.g. by using a different tag or commit hash).
 
@@ -72,13 +78,13 @@ hk = "<version>"
 pkl = "<version>"
 ```
 
-Currently the configuration requires to explicitly configure the `pkl` CLI to be used as backend, since the PKL support built into `hk` does not support all language features required for our configuration:
+hk **2.13.0 or newer** is required (hk-config 3.x and later). hk 2 evaluates
+`hk.pkl` with its built-in Pkl evaluator, so do **not** set `HK_PKL_BACKEND`:
+hk 2 rejects any value other than `pklr`. When upgrading a repository from hk 1,
+remove that entry from the `[env]` section of `mise.toml`.
 
-```toml
-[env]
-# explicitly use pkl CLI instead of pklr library because the latter does not support all language features needed
-HK_PKL_BACKEND = "pkl"
-```
+The `pkl` CLI is still useful for debugging (`pkl eval hk.pkl`) and is used by
+the `pkl` and `pklformat` steps, so keep it in `mise.toml`.
 
 If experimental features are enabled in your mise setup, you can add an `enter` and `postinstall` hook to automatically install the git hooks after running `mise install`:
 
@@ -112,7 +118,7 @@ to raw GitHub URLs:
 amends "package://github.com/wetransform/hk-config/releases/download/v<version>/hk-config@<version>#/configs/Default.pkl"
 ```
 
-Replace `<version>` with the desired release version, e.g. `2.4.0` (note: the
+Replace `<version>` with the desired release version, e.g. `3.0.0` (note: the
 `v` prefix appears in the path segment but not in the `hk-config@<version>`
 package coordinate). Package archives are attached to every release from the
 one that introduced packaging onward; earlier tags have no archive (use the

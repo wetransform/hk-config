@@ -1,11 +1,9 @@
 [tools]
 # for git hooks
-hk = "1.58.1"
+hk = "2.13.0"
 pkl = "0.33.0"
-
-[env]
-# explicitly use pkl CLI instead of pklr library because the latter does not support all language features needed
-HK_PKL_BACKEND = "pkl"
+# for the terraform step tests (the step expects terraform to be provided by the project)
+terraform = "1.17.2"
 
 [hooks]
 enter = "mise x -- hk install --mise"
